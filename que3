@@ -1,0 +1,1161 @@
+import pandas as pd
+import numpy as np
+df = pd.read_csv(r"D:\Data Science\MACHINE LEARNING\Assignment\Assignment-3 Linear Models\Mobile Price Prediction\mobile_price_data.csv")
+df
+mobile_name	mobile_price	mobile_color	dual_sim	disp_size	resolution	os	num_cores	mp_speed	int_memory	ram	p_cam	f_cam	network	bluetooth	battery_power	mob_width	mob_height	mob_depth	mob_weight
+0	Realme Narzo 10A (So White, 32 GB)	₹8,999	So White	Dual Sim	16.56 cm (6.52 inch)	1600 x 720 Pixels	Android 10	Octa Core	2 GHz	32 GB	3 GB	12MP + 2MP + 2MP	5MP Front Camera	4G VOLTE, 4G, 3G, 2G	Yes	5000 mAh	75 mm	164.4 mm	8.95 mm	195 g
+1	Realme Narzo 10A (So Blue, 32 GB)	₹8,999	So Blue	Dual Sim	16.56 cm (6.52 inch)	1600 x 720 Pixels	Android 10	Octa Core	2 GHz	32 GB	3 GB	12MP + 2MP + 2MP	5MP Front Camera	4G VOLTE, 4G, 3G, 2G	Yes	5000 mAh	75 mm	164.4 mm	8.95 mm	195 g
+2	Realme Narzo 10A (So Blue, 64 GB)	₹9,999	So Blue	Dual Sim	16.56 cm (6.52 inch)	1600 x 720 Pixels	Android 10	Octa Core	2 GHz	64 GB	4 GB	12MP + 2MP + 2MP	5MP Front Camera	4G VOLTE, 4G, 3G, 2G	Yes	5000 mAh	75 mm	164.4 mm	8.95 mm	195 g
+3	Realme Narzo 10A (So White, 64 GB)	₹9,999	So White	Dual Sim	16.56 cm (6.52 inch)	1600 x 720 Pixels	Android 10	Octa Core	2 GHz	64 GB	4 GB	12MP + 2MP + 2MP	5MP Front Camera	4G VOLTE, 4G, 3G, 2G	Yes	5000 mAh	75 mm	164.4 mm	8.95 mm	195 g
+4	Realme Narzo 10 (That Green, 128 GB)	₹11,999	That Green	Dual Sim	16.51 cm (6.5 inch)	1600 x 720 Pixels	Android 10	Octa Core	2 GHz	128 GB	4 GB	48MP + 8MP + 2MP + 2MP	16MP Front Camera	4G VOLTE, 4G, 3G, 2G	Yes	5000 mAh	75.4 mm	164.4 mm	9 mm	199 g
+...	...	...	...	...	...	...	...	...	...	...	...	...	...	...	...	...	...	...	...	...
+454	OPPO A83 (Black, 32 GB)	₹13,490	Black	Dual Sim	14.48 cm (5.7 inch)	1440 x 720 Pixels	Android Nougat 7.1	Octa Core	2.5 GHz	32 GB	3 GB	13MP Rear Camera	8MP Front Camera	3G, 4G VOLTE, 2G	Yes	3180 mAh	73.1 mm	150.5 mm	7.7 mm	143 g
+455	OPPO A83 (Red, 16 GB)	₹9,490	Red	Dual Sim	14.48 cm (5.7 inch)	1440 x 720 Pixels	Android Nougat 7.1	Octa Core	2.5 GHz	16 GB	2 GB	13MP Rear Camera	8MP Front Camera	3G, 4G VOLTE, 4G, 2G	Yes	3180 mAh	73.1 mm	150.5 mm	7.7 mm	143 g
+456	OPPO F7 (Red, 64 GB)	₹22,990	Red	Dual Sim	15.82 cm (6.23 inch)	2280 x 1080 Pixels	Android Oreo 8.1.0	Octa Core	2 GHz	64 GB	4 GB	16MP Rear Camera	25MP Front Camera	3G, 4G, 2G	Yes	3400 mAh	75.3 mm	156 mm	7.8 mm	158 g
+457	OPPO F11 (Marble Green, 128 GB)	₹13,990	Marble Green	Dual Sim	16.59 cm (6.53 inch)	1080 x 2340 pixels	Android Pie 9.0	Octa Core	2.1 GHz	128 GB	4 GB	48MP + 5MP	16MP Front Camera	3G, 4G VOLTE, 4G, 2G	Yes	4020 mAh	76.1 mm	162 mm	8.3 mm	188 g
+458	OPPO F11 (Fluorite Purple, 128 GB)	₹13,990	Fluorite Purple	Dual Sim	16.59 cm (6.53 inch)	1080 x 2340 pixels	Android Pie 9.0	Octa Core	2.1 GHz	128 GB	4 GB	48MP + 5MP	16MP Front Camera	3G, 4G VOLTE, 4G, 2G	Yes	4020 mAh	76.1 mm	162 mm	8.3 mm	188 g
+459 rows × 20 columns
+
+df.info()
+<class 'pandas.core.frame.DataFrame'>
+RangeIndex: 459 entries, 0 to 458
+Data columns (total 20 columns):
+ #   Column         Non-Null Count  Dtype 
+---  ------         --------------  ----- 
+ 0   mobile_name    459 non-null    object
+ 1   mobile_price   459 non-null    object
+ 2   mobile_color   459 non-null    object
+ 3   dual_sim       459 non-null    object
+ 4   disp_size      459 non-null    object
+ 5   resolution     459 non-null    object
+ 6   os             459 non-null    object
+ 7   num_cores      459 non-null    object
+ 8   mp_speed       459 non-null    object
+ 9   int_memory     459 non-null    object
+ 10  ram            459 non-null    object
+ 11  p_cam          459 non-null    object
+ 12  f_cam          459 non-null    object
+ 13  network        459 non-null    object
+ 14  bluetooth      459 non-null    object
+ 15  battery_power  459 non-null    object
+ 16  mob_width      459 non-null    object
+ 17  mob_height     459 non-null    object
+ 18  mob_depth      459 non-null    object
+ 19  mob_weight     459 non-null    object
+dtypes: object(20)
+memory usage: 71.8+ KB
+# to check unique value in each column
+for col in df.columns:
+    print(col, df[col].unique())
+    print('\n')
+mobile_name ['Realme Narzo 10A (So White, 32 GB)' 'Realme Narzo 10A (So Blue, 32 GB)'
+ 'Realme Narzo 10A (So Blue, 64 GB)' 'Realme Narzo 10A (So White, 64 GB)'
+ 'Realme Narzo 10 (That Green, 128 GB)'
+ 'Realme Narzo 10 (That White, 128 GB)'
+ 'Realme 5 Pro (Crystal Green, 64 GB)'
+ 'Realme 5 Pro (Crystal Green, 128 GB)'
+ 'Realme 5 Pro (Sparkling Blue, 128 GB)'
+ 'Realme 5 Pro (Sparkling Blue, 64 GB)'
+ 'Realme X2 Pro (Lunar White, 256 GB)'
+ 'Realme X2 Pro (Neptune Blue, 256 GB)'
+ 'Realme X2 Pro (Neptune Blue, 128 GB)'
+ 'Realme X2 Pro (Lunar White, 128 GB)' 'Realme 2 Pro (Black Sea, 128 GB)'
+ 'Realme XT (Pearl Blue, 64 GB)' 'Realme XT (Pearl White, 64 GB)'
+ 'Realme X50 Pro (Rust Red, 128 GB)' 'Realme X50 Pro (Moss Green, 128 GB)'
+ 'Realme X50 Pro (Moss Green, 256 GB)' 'Realme C3 (Frozen Blue, 32 GB)'
+ 'Realme 6 (Comet White, 128 GB)'
+ 'Realme 6 Pro (Lightning Orange, 128 GB)'
+ 'Realme 6 Pro (Lightning Blue, 128 GB)'
+ 'Realme C2 (Diamond Black, 32 GB)' 'Realme C2 (Diamond Blue, 32 GB)'
+ 'Realme C2 (Diamond Ruby, 32 GB)' 'Realme 6 (Comet Blue, 128 GB)'
+ 'Realme C2 (Diamond Sapphire, 32 GB)' 'Realme 5s (Crystal Red, 128 GB)'
+ 'Realme 5s (Crystal Blue, 64 GB)' 'Realme 5s (Crystal Purple, 128 GB)'
+ 'Realme 5s (Crystal Red, 64 GB)' 'Realme 5s (Crystal Blue, 128 GB)'
+ 'Realme 5s (Crystal Purple, 64 GB)' 'Realme X2 Pro (Neptune Blue, 64 GB)'
+ 'Realme X2 Pro (Lunar White, 64 GB)' 'Realme X2 Pro (Red Brick, 256 GB)'
+ 'Realme X2 Pro (Concrete, 256 GB)' 'Realme X2 (Pearl White, 128 GB)'
+ 'Realme X2 (Pearl Green, 128 GB)' 'Realme X2 (Pearl Blue, 64 GB)'
+ 'Realme X2 (Pearl Green, 64 GB)' 'Realme X2 (Pearl Blue, 128 GB)'
+ 'Realme C2 (Diamond Blue, 16 GB)' 'Realme Narzo 10 (That Blue, 128 GB)'
+ 'Realme X3 (Glacier Blue, 128 GB)' 'Realme X3 (Arctic White, 128 GB)'
+ 'Realme X3 SuperZoom (Glacier Blue, 128 GB)'
+ 'Realme X3 SuperZoom (Glacier Blue, 256 GB)'
+ 'Realme X3 SuperZoom (Arctic White, 256 GB)'
+ 'Realme X3 SuperZoom (Arctic White, 128 GB)'
+ 'Realme 3 (Dynamic Black, 32 GB)' 'Realme 3 (Diamond Red, 64 GB)'
+ 'Realme 3 (Radiant Blue, 64 GB)' 'Realme 3 (Dynamic Black, 64 GB)'
+ 'Realme 3 (Diamond Red, 32 GB)' 'Realme 3 (Black, 64 GB)'
+ 'Redmi 8 (Sapphire Blue, 64 GB)' 'Redmi 8 (Onyx Black, 64 GB)'
+ 'Redmi K20 Pro (Flame Red, 128 GB)'
+ 'Redmi Note 9 Pro (Aurora Blue, 64 GB)'
+ 'Redmi K20 Pro (Carbon Black, 128 GB)' 'Mi A3 (More Than White, 128 GB)'
+ 'Redmi K20 Pro (Glacier Blue, 128 GB)'
+ 'Redmi Note 7 Pro (Space Black, 128 GB)' 'Mi A3 (Not just Blue, 128 GB)'
+ 'Mi Mix 2 (Black, 128 GB)' 'Redmi K20 Pro (Pearl White, 128 GB)'
+ 'Mi A3 (Kind of Grey, 128 GB)' 'Redmi K20 Pro (Carbon Black, 256 GB)'
+ 'Redmi Note 7 Pro (Nebula Red, 128 GB)' 'Redmi K20 (Carbon Black, 64 GB)'
+ 'Redmi Y2 (Gold, 64 GB)' 'Redmi K20 Pro (Pearl White, 256 GB)'
+ 'Redmi K20 (Glacier Blue, 128 GB)' 'Redmi Note 6 Pro (Rose Gold, 64 GB)'
+ 'Mi A2 (Red, 64 GB)' 'Mi 10 (Twilight Grey, 256 GB)'
+ 'Mi 10 (Coral Green, 128 GB)' 'Redmi K20 (Flame Red, 128 GB)'
+ 'Mi A2 (Red, 128 GB)' 'Mi A2 (Gold, 128 GB)'
+ 'Redmi K20 (Carbon Black, 128 GB)' 'Mi A2 (Lake Blue, 128 GB)'
+ 'Redmi Note 5 Pro (Red, 64 GB)' 'Redmi K20 (Pearl White, 128 GB)'
+ 'MI3 (Metallic Grey, 16 GB)' 'Redmi 8 (Emerald Green, 64 GB)'
+ 'Redmi 8 (Ruby Red, 64 GB)' 'Mi A3 (Kind of Grey, 64 GB)'
+ 'Redmi Note 9 Pro (Interstellar Black, 128 GB)'
+ 'Redmi Note 9 Pro (Aurora Blue, 128 GB)'
+ 'Redmi 8A Dual (Sea Blue, 32 GB)' 'Redmi 8A Dual (Midnight Grey, 32 GB)'
+ 'Redmi Note 8 (Moonlight White, 64 GB)'
+ 'Redmi Note 8 (Neptune Blue, 128 GB)'
+ 'Redmi Note 8 (Neptune Blue, 32 GB)' 'Mi A3 (Not just Blue, 64 GB)'
+ 'Mi A3 (More Than White, 64 GB)' 'Redmi Note 8 (Neptune Blue, 64 GB)'
+ 'Redmi Note 8 (Space Black, 64 GB)' 'Redmi 8A Dual (Sky White, 32 GB)'
+ 'Redmi Note 7 Pro (Space Black, 64 GB)'
+ 'Redmi K20 Pro (Flame Red, 256 GB)'
+ 'Redmi Note 9 Pro (Glacier White, 64 GB)'
+ 'Redmi Note 9 Pro (Interstellar Black, 64 GB)'
+ 'Redmi Note 6 Pro (Black, 64 GB)' 'Redmi Note 6 Pro (Red, 64 GB)'
+ 'Redmi Note 4 (Black, 64 GB)' 'Redmi K20 (Glacier Blue, 64 GB)'
+ 'Redmi Note 5 Pro (Gold, 64 GB)'
+ 'Redmi Note 7 Pro (Astro Moonlight White, 128 GB)'
+ 'Redmi Note 9 Pro Max (Interstellar Black, 128 GB)'
+ 'Redmi Note 9 Pro Max (Glacier White, 128 GB)'
+ 'Redmi 8A (Sunset Red, 32 GB)' 'Mi 10 (Coral Green, 256 GB)'
+ 'Redmi Note 5 Pro (Black, 64 GB)' 'Redmi Note 5 Pro (Rose Gold, 64 GB)'
+ 'Mi A2 (Blue/Lake Blue, 64 GB)' 'Redmi Go (Blue, 16 GB)'
+ 'Redmi Note 7S (Sapphire Blue, 32 GB)' 'Redmi Y2 (Rose Gold, 64 GB)'
+ 'Redmi 7A (Matte Black, 32 GB)' 'Redmi Note 7S (Onyx Black, 64 GB)'
+ 'Redmi Y2 (Blue, 32 GB)' 'Redmi Y2 (Black, 64 GB)'
+ 'Redmi Note 7 (Onyx Black, 32 GB)' 'Redmi 7A (Matte Black, 16 GB)'
+ 'Redmi 6 (Rose Gold, 32 GB)' 'Redmi Note 7 (Ruby Red, 32 GB)'
+ 'Redmi Note 7S (Ruby Red, 64 GB)' 'Redmi 7A (Matte Gold, 16 GB)'
+ 'Redmi Note 5 Pro (Blue, 64 GB)' 'Redmi Y3 (Elegant Blue, 32 GB)'
+ 'Redmi Y3 (Prime Black, 32 GB)' 'Redmi Note 7 (Sapphire Blue, 32 GB)'
+ 'Redmi K20 (Flame Red, 64 GB)'
+ 'Redmi Note 7S (Astro Moonlight White, 32 GB)'
+ 'Redmi Note 4 (Gold, 64 GB)' 'Redmi 8A Dual (Sky White, 64 GB)'
+ 'Redmi 8A Dual (Sea Blue, 64 GB)'
+ 'Redmi Note 7 Pro (Neptune Blue, 128 GB)'
+ 'Redmi 8A Dual (Midnight Grey, 64 GB)'
+ 'Redmi Note 9 Pro (Glacier White, 128 GB)'
+ 'Redmi Note 7 (Sapphire Blue, 64 GB)' 'Mi A2 (Rose Gold, 64 GB)'
+ 'Redmi 7A (Matte Gold, 32 GB)' 'Redmi Y2 (Rose Gold, 32 GB)'
+ 'Redmi Y1 (Grey, 64 GB)' 'Redmi Y2 (Dark Grey, 32 GB)'
+ 'Vivo Y12 (Burgundy Red, 64 GB)' 'Vivo U10 (Thunder Black, 32 GB)'
+ 'Vivo Y11 (Mineral Blue, 32 GB)' 'Vivo Z1x (Fusion Blue, 64 GB)'
+ 'Vivo Z1x (Phantom Purple, 64 GB)' 'Vivo Z1x (Fusion Blue, 128 GB)'
+ 'Vivo Z1x (Phantom Purple, 128 GB)' 'Vivo Y15 (Burgundy Red, 64 GB)'
+ 'Vivo Y11 (Agate Red, 32 GB)' 'Vivo S1 Pro (Mystic Black, 128 GB)'
+ 'Vivo S1 Pro (Jazzy Blue, 128 GB)' 'Vivo S1 Pro (Dreamy White, 128 GB)'
+ 'Vivo Y91i (Fusion Black, 32 GB)' 'Vivo Y91i (Ocean Blue, 32 GB)'
+ 'Vivo Y50 (Pearl White, 128 GB)' 'Vivo Y50 (Iris Blue, 128 GB)'
+ 'Vivo Z1Pro (Sonic Black, 128 GB)' 'Vivo Z1Pro (Sonic Black, 64 GB)'
+ 'Vivo Z1Pro (Sonic Blue, 128 GB)' 'Vivo Y19 (Magnetic Black, 128 GB)'
+ 'Vivo V19 (Mystic Silver, 256 GB)' 'Vivo V19 (Mystic Silver, 128 GB)'
+ 'Vivo V19 (Piano Black, 128 GB)' 'Vivo V19 (Piano Black, 256 GB)'
+ 'Vivo V17 (Glacier ice white, 128 GB)'
+ 'Vivo V17 (Midnight Ocean Black, 128 GB)'
+ 'Vivo U10 (Electric Blue, 64 GB)' 'Vivo S1 (Skyline Blue, 64 GB)'
+ 'Vivo S1 (Skyline Blue, 128 GB)' 'Vivo S1 (Diamond Black, 128 GB)'
+ 'Vivo Y91i (Fusion Black, 16 GB)' 'Vivo V15 Pro (Topaz Blue, 128 GB)'
+ 'Vivo Y17 (Mystic Purple, 128 GB)' 'Vivo V15 Pro (Ruby Red, 128 GB)'
+ 'Vivo V17Pro (Midnight Ocean Black, 128 GB)'
+ 'Vivo V17Pro (Glacier Ice White, 128 GB)'
+ 'Vivo U10 (Thunder Black, 64 GB)'
+ 'Vivo V11 Pro (Starry Night Black, 64 GB)' 'Vivo NEX (Black, 128 GB)'
+ 'Vivo Y81 (Black, 32 GB)' 'Vivo V9 Youth (Black, 32 GB)'
+ 'Vivo V15 (Frozen Black, 64 GB)' 'Vivo Y93 (Starry Black, 32 GB)'
+ 'Vivo Y93 (Starry Black, 64 GB)' 'Vivo Y91 (Ocean Blue, 32 GB)'
+ 'Vivo V7 (Matte Black, 32 GB)' 'Vivo V7 (Energetic Blue, 32 GB)'
+ 'Vivo Y83 (Gold, 32 GB)' 'Vivo V9 (Gold, 64 GB)'
+ 'Vivo Y71i (Matte Black, 16 GB)' 'Vivo Y93 (Nebula Purple, 32 GB)'
+ 'Vivo U10 (Electric Blue, 32 GB)' 'Vivo Z1Pro (Sonic Blue, 64 GB)'
+ 'Vivo V9 Pro (Black, 64 GB)' 'Vivo V9 Pro (Nebula Purple, 64 GB)'
+ 'Vivo Y81 (Gold, 32 GB)' 'Vivo V9 Youth (Gold, 32 GB)'
+ 'Vivo Y91 (Starry Black, 32 GB)' 'Vivo Y71 (Gold, 16 GB)'
+ 'Vivo Y71 (Matte Black, 32 GB)' 'Vivo V7+ (Energetic Blue, 64 GB)'
+ 'Vivo Y55S (Matte Black, 16 GB)' 'Vivo Y55S (Grey, 16 GB)'
+ 'Vivo Y81i (Gold, 16 GB)' 'Vivo Y71 (Matte Black, 16 GB)'
+ 'Vivo Y71 (Gold, 32 GB)' 'Vivo Y91i (Black, 32 GB)'
+ 'Vivo Y69 (Gold, 32 GB)' 'Samsung Galaxy M30S (Blue, 128 GB)'
+ 'Samsung Galaxy A21s (Blue, 64 GB)' 'Samsung Galaxy A21s (Black, 64 GB)'
+ 'Samsung Galaxy A21s (White, 64 GB)'
+ 'Samsung Galaxy M21 (Midnight Blue, 64 GB)'
+ 'Samsung Galaxy M21 (Raven Black, 64 GB)'
+ 'Samsung Galaxy J2 Core (Black, 16 GB)'
+ 'Samsung Galaxy M31 (Ocean Blue, 128 GB)'
+ 'Samsung Galaxy S10 Lite (Prism Blue, 512 GB)'
+ 'Samsung Galaxy S10 Lite (Prism Black, 512 GB)'
+ 'Samsung Galaxy J2-2017 (Metallic gold, 8 GB)'
+ 'Samsung Galaxy J7 Pro (Black, 64 GB)'
+ 'Samsung Galaxy J7 Nxt (Black, 16 GB)'
+ 'Samsung Galaxy J7 Nxt (Gold, 16 GB)' 'Infinix Hot 9 Pro (Violet, 64 GB)'
+ 'Infinix Hot 9 Pro (Ocean Wave, 64 GB)' 'Infinix Hot 9 (Violet, 64 GB)'
+ 'Infinix Hot 9 (Ocean Wave, 64 GB)'
+ 'Infinix Note 5 Stylus (Charcoal Blue, 64 GB)'
+ 'Infinix S5 Pro (Forest Green, 64 GB)' 'Infinix S5 Pro (Violet, 64 GB)'
+ 'Infinix Note 5 Stylus (Bordeaux Red, 64 GB)'
+ 'Infinix Hot S3X (Tradew Gray, 32 GB)'
+ 'Infinix Hot S3X (Milan Black, 32 GB)' 'Infinix Note 5 (Ice Blue, 64 GB)'
+ 'Infinix Note 5 (Berlin Gray, 64 GB)'
+ 'Infinix Hot 7 (Midnight Black, 64 GB)'
+ 'Infinix Hot 7 (Mocha Brown, 64 GB)' 'Infinix Hot 7 (Aqua Blue, 64 GB)'
+ 'Infinix Note 5 (Berlin Gray, 32 GB)'
+ 'Infinix Hot S3 (Topaz Blue, 64 GB)'
+ 'Infinix Hot S3 (Sandstone Black, 64 GB)'
+ 'Infinix Hot S3 (Blush Gold, 64 GB)' 'Infinix S5 Lite (Violet, 64 GB)'
+ 'Infinix S5 Lite (Quetzal Cyan, 64 GB)'
+ 'Infinix S5 Lite (Midnight Black, 64 GB)'
+ 'Infinix Note 5 (Milan Black, 32 GB)'
+ 'Infinix Zero 5 Pro (Bronze Gold Black, 128 GB)'
+ 'Infinix S4 (Nebula Blue, 32 GB)' 'Infinix S4 (Twilight Purple, 32 GB)'
+ 'Infinix S4 (Space Gray, 32 GB)' 'Infinix S5 (Quetzal Cyan, 64 GB)'
+ 'Infinix S5 (Violet, 64 GB)' 'Infinix Hot S3 (Blush Gold, 32 GB)'
+ 'Infinix Hot S3 (Sandstone Black, 32 GB)'
+ 'Infinix Hot S3 (Topaz Blue, 32 GB)'
+ 'Infinix Hot S3 (Bordeaux Red, 32 GB)'
+ 'Infinix Note 5 (Milan Black, 64 GB)'
+ 'Infinix Zero 5 (Sandstone Black, 64 GB)'
+ 'Infinix Zero 5 (Bordeaux Red, 64 GB)' 'POCO F1 (Steel Blue, 128 GB)'
+ 'POCO F1 (Steel Blue, 256 GB)' 'POCO F1 (Graphite Black, 256 GB)'
+ 'POCO F1 (Armoured Edition, 256 GB)' 'POCO F1 (Rosso Red, 64 GB)'
+ 'POCO X2 (Matrix Purple, 256 GB)' 'POCO X2 (Matrix Purple, 64 GB)'
+ 'POCO X2 (Atlantis Blue, 64 GB)' 'POCO X2 (Phoenix Red, 128 GB)'
+ 'POCO X2 (Atlantis Blue, 128 GB)' 'POCO X2 (Atlantis Blue, 256 GB)'
+ 'POCO X2 (Phoenix Red, 256 GB)' 'POCO X2 (Phoenix Red, 64 GB)'
+ 'POCO X2 Special Edition (Matrix Purple, 128 GB)'
+ 'POCO F1 (Rosso Red, 128 GB)' 'POCO F1 (Graphite Black, 128 GB)'
+ 'POCO F1 (Rosso Red, 256 GB)' 'POCO F1 (Armoured Edition, 128 GB)'
+ 'POCO X2 Special Edition (Atlantis Blue, 128 GB)'
+ 'POCO X2 Special Edition (Phoenix Red, 128 GB)'
+ 'POCO F1 (Steel Blue, 64 GB)' 'POCO F1 (Graphite Black, 64 GB)'
+ 'POCO M2 Pro (Green and Greener, 64 GB)'
+ 'POCO M2 Pro (Green and Greener, 128 GB)'
+ 'POCO M2 Pro (Out of the Blue, 128 GB)'
+ 'POCO M2 Pro (Two Shades of Black, 128 GB)'
+ 'POCO M2 Pro (Two Shades of Black, 64 GB)'
+ 'POCO M2 Pro (Out of the Blue, 64 GB)' 'OPPO A31 (Fantasy White, 64 GB)'
+ 'OPPO A31 (Fantasy White, 128 GB)' 'OPPO A31 (Mystery Black, 128 GB)'
+ 'OPPO A31 (Mystery Black, 64 GB)' 'OPPO A9 2020 (Marine Green, 128 GB)'
+ 'OPPO A12 (Black, 32 GB)' 'OPPO A12 (Blue, 32 GB)'
+ 'OPPO A5s (Blue, 32 GB)' 'OPPO F15 (Unicorn White, 128 GB)'
+ 'OPPO F15 (Blazing Blue, 128 GB)' 'OPPO A52 (Twilight Black, 128 GB)'
+ 'OPPO A52 (Stream White, 128 GB)' 'OPPO A11K (Deep Blue, 32 GB)'
+ 'OPPO A11K (Flowing Silver, 32 GB)' 'OPPO A5s (Green, 64 GB)'
+ 'OPPO A9 2020 (Space Purple, 128 GB)'
+ 'OPPO F15 (Lightening Black, 128 GB)' 'OPPO A5s (Gold, 64 GB)'
+ 'OPPO Reno3 Pro (Sky White, 128 GB)'
+ 'OPPO Reno3 Pro (Auroral Blue, 128 GB)'
+ 'OPPO Reno3 Pro (Midnight Black, 128 GB)' 'OPPO A5s (Black, 32 GB)'
+ 'OPPO F11 Pro (Thunder Black, 64 GB)'
+ 'OPPO Reno 10x Zoom (Ocean Green, 256 GB)'
+ 'OPPO Reno2 (Ocean Blue, 256 GB)' 'OPPO Find X (Glacier Blue, 256 GB)'
+ 'OPPO Find X (Bordeaux Red, 256 GB)'
+ 'OPPO Reno2 Z (Luminous Black, 256 GB)'
+ 'OPPO A83 (2018 Edition) (Champagne, 64 GB)'
+ 'OPPO A9 2020 (Vanilla Mint, 128 GB)' 'OPPO A5s (Red, 32 GB)'
+ 'OPPO K1 (Piano Black, 64 GB)' 'OPPO F9 Pro (Sunrise Red, 64 GB)'
+ 'OPPO K1 (Astral Blue, 64 GB)' 'OPPO F11 (Marble Green, 128 GB)'
+ 'OPPO A1K (Red, 32 GB)' 'OPPO A7 (Glaring Gold, 64 GB)'
+ 'OPPO F9 Pro (Twilight Blue, 64 GB)' 'OPPO F9 Pro (Starry Purple, 64 GB)'
+ 'OPPO A7 (Glaze Blue, 64 GB)' 'OPPO A3s (Red, 64 GB)'
+ 'OPPO A3s (Red, 16 GB)' 'OPPO A3s (Purple, 16 GB)'
+ 'OPPO A12 (Black, 64 GB)' 'OPPO A12 (Blue, 64 GB)'
+ 'OPPO F11 Pro (Waterfall Grey, 128 GB)'
+ 'OPPO F11 Pro (Thunder Black, 128 GB)'
+ 'OPPO R17 Pro (Radiant Mist, 128 GB)' 'OPPO A83 (Black, 32 GB)'
+ 'OPPO A83 (Red, 16 GB)' 'OPPO F7 (Red, 64 GB)'
+ 'OPPO F11 (Fluorite Purple, 128 GB)' 'OPPO F11 (Jewelry White, 128 GB)'
+ 'OPPO F1S (Rose Gold, 64 GB)' 'OPPO F1S (Grey, 64 GB)'
+ 'OPPO F1S (Gold, 64 GB)' 'OPPO F1S (Grey, 32 GB)'
+ 'OPPO A71k (New Edition) (Blue, 16 GB)' 'OPPO A3s (Purple, 32 GB)'
+ 'OPPO F3 (Rose Gold, 64 GB)' 'OPPO A5 (Diamond Red, 32 GB)'
+ 'OPPO A83 (2018 Edition) (Red, 64 GB)' 'OPPO F9 (Stellar Purple, 64 GB)'
+ 'OPPO A3s (Purple, 64 GB)' 'OPPO Reno 10x Zoom (Jet Black, 256 GB)'
+ 'OPPO Reno 10x Zoom (Jet Black, 128 GB)']
+
+
+mobile_price ['₹8,999' '₹9,999' '₹11,999' '₹14,999' '₹16,999' '₹13,999' '₹35,999'
+ '₹31,999' '₹15,490' '₹41,999' '₹46,999' '₹19,999' '₹6,999' '₹7,499'
+ '₹17,999' '₹10,999' '₹29,999' '₹36,999' '₹20,999' '₹6,499' '₹25,999'
+ '₹24,999' '₹27,999' '₹32,999' '₹8,499' '₹9,499' '₹10,499' '₹9,799'
+ '₹16,939' '₹17,350' '₹21,999' '₹13,495' '₹15,990' '₹55,799' '₹51,800'
+ '₹16,899' '₹12,999' '₹16,998' '₹7,399' '₹11,199' '₹13,261' '₹10,978'
+ '₹11,280' '₹10,100' '₹7,450' '₹55,400' '₹6,700' '₹6,699' '₹7,999'
+ '₹8,369' '₹8,090' '₹8,498' '₹9,990' '₹11,349' '₹14,800' '₹13,990'
+ '₹8,689' '₹11,599' '₹9,900' '₹10,990' '₹10,849' '₹16,990' '₹18,990'
+ '₹12,990' '₹19,990' '₹8,990' '₹11,982' '₹17,990' '₹8,705' '₹8,949'
+ '₹16,375' '₹31,990' '₹27,990' '₹24,990' '₹11,990' '₹9,199' '₹22,399'
+ '₹21,099' '₹29,499' '₹11,490' '₹28,499' '₹28,990' '₹29,990' '₹15,500'
+ '₹14,990' '₹18,900' '₹24,000' '₹8,900' '₹11,500' '₹10,900' '₹12,000'
+ '₹22,325' '₹13,995' '₹13,529' '₹8,998' '₹14,914' '₹14,538' '₹17,490'
+ '₹16,499' '₹18,499' '₹15,999' '₹6,299' '₹19,900' '₹47,999' '₹6,000'
+ '₹20,995' '₹11,995' '₹10,995' '₹11,499' '₹7,699' '₹7,599' '₹9,599'
+ '₹18,999' '₹22,999' '₹21,499' '₹17,499' '₹12,490' '₹15,899' '₹41,990'
+ '₹38,990' '₹60,990' '₹14,499' '₹13,744' '₹9,490' '₹18,989' '₹19,038'
+ '₹8,490' '₹19,600' '₹21,150' '₹17,500' '₹14,495' '₹9,500' '₹31,590'
+ '₹13,490' '₹22,990' '₹18,000' '₹13,500' '₹17,000' '₹15,000']
+
+
+mobile_color ['So White' 'So Blue' 'That Green' 'That White' 'Crystal Green'
+ 'Sparkling Blue' 'Lunar White' 'Neptune Blue' 'Black Sea' 'Pearl Blue'
+ 'Pearl White' 'Rust Red' 'Moss Green' 'Frozen Blue' 'Comet White'
+ 'Lightning Orange' 'Lightning Blue' 'Diamond Black' 'Diamond Blue'
+ 'Diamond Ruby' 'Comet Blue' 'Diamond Sapphire' 'Crystal Red'
+ 'Crystal Blue' 'Crystal Purple' 'Red Brick' 'Concrete' 'Pearl Green'
+ 'That Blue' 'Glacier Blue' 'Arctic White' 'Dynamic Black' 'Diamond Red'
+ 'Radiant Blue' 'Black' 'Sapphire Blue' 'Onyx Black' 'Flame Red'
+ 'Aurora Blue' 'Carbon Black' 'More Than White' 'Space Black'
+ 'Not just Blue' 'Kind of Grey' 'Nebula Red' 'Gold' 'Rose Gold' 'Red'
+ 'Twilight Grey' 'Coral Green' 'Lake Blue' 'Metallic Grey' 'Emerald Green'
+ 'Ruby Red' 'Interstellar Black' 'Sea Blue' 'Midnight Grey'
+ 'Moonlight White' 'Sky White' 'Glacier White' 'Astro Moonlight White'
+ 'Sunset Red' 'Blue/Lake Blue' 'Blue' 'Matte Black' 'Matte Gold'
+ 'Elegant Blue' 'Prime Black' 'Grey' 'Dark Grey' 'Burgundy Red'
+ 'Thunder Black' 'Mineral Blue' 'Fusion Blue' 'Phantom Purple' 'Agate Red'
+ 'Mystic Black' 'Jazzy Blue' 'Dreamy White' 'Fusion Black' 'Ocean Blue'
+ 'Iris Blue' 'Sonic Black' 'Sonic Blue' 'Magnetic Black' 'Mystic Silver'
+ 'Piano Black' 'Glacier ice white' 'Midnight Ocean Black' 'Electric Blue'
+ 'Skyline Blue' 'Topaz Blue' 'Mystic Purple' 'Glacier Ice White'
+ 'Starry Night Black' 'Frozen Black' 'Starry Black' 'Energetic Blue'
+ 'Nebula Purple' 'White' 'Midnight Blue' 'Raven Black' 'Prism Blue'
+ 'Prism Black' 'Metallic gold' 'Violet' 'Ocean Wave' 'Charcoal Blue'
+ 'Forest Green' 'Bordeaux Red' 'Tradew Gray' 'Milan Black' 'Ice Blue'
+ 'Berlin Gray' 'Midnight Black' 'Mocha Brown' 'Aqua Blue'
+ 'Sandstone Black' 'Blush Gold' 'Quetzal Cyan' 'Bronze Gold Black'
+ 'Nebula Blue' 'Twilight Purple' 'Space Gray' 'Steel Blue'
+ 'Graphite Black' 'Armoured Edition' 'Rosso Red' 'Matrix Purple'
+ 'Atlantis Blue' 'Phoenix Red' 'Green and Greener' 'Out of the Blue'
+ 'Two Shades of Black' 'Fantasy White' 'Mystery Black' 'Marine Green'
+ 'Unicorn White' 'Blazing Blue' 'Twilight Black' 'Stream White'
+ 'Deep Blue' 'Flowing Silver' 'Green' 'Space Purple' 'Lightening Black'
+ 'Auroral Blue' 'Ocean Green' 'Luminous Black' 'Champagne' 'Vanilla Mint'
+ 'Sunrise Red' 'Astral Blue' 'Marble Green' 'Glaring Gold' 'Twilight Blue'
+ 'Starry Purple' 'Glaze Blue' 'Purple' 'Waterfall Grey' 'Radiant Mist'
+ 'Fluorite Purple' 'Jewelry White' 'Stellar Purple' 'Jet Black']
+
+
+dual_sim ['Dual Sim' 'Single Sim']
+
+
+disp_size ['16.56 cm (6.52 inch)' '16.51 cm (6.5 inch)' '16.0 cm (6.3 inch)'
+ '16.26 cm (6.4 inch)' '16.36 cm (6.44 inch)' '16.76 cm (6.6 inch)'
+ '15.49 cm (6.1 inch)' '16.69 cm (6.57 inch)' '15.8 cm (6.22 inch)'
+ '16.23 cm (6.39 inch)' '16.94 cm (6.67 inch)' '15.44 cm (6.08 inch)'
+ '15.21 cm (5.99 inch)' '15.9 cm (6.26 inch)' '12.7 cm (5 inch)'
+ '15.46 cm (6.088 inch)' '13.97 cm (5.5 inch)' '13.84 cm (5.45 inch)'
+ '16.13 cm (6.35 inch)' '16.21 cm (6.38 inch)' '16.59 cm (6.53 inch)'
+ '16.28 cm (6.41 inch)' '16.74 cm (6.59 inch)' '14.48 cm (5.7 inch)'
+ '15.24 cm (6 inch)' '13.21 cm (5.2 inch)' '17.02 cm (6.7 inch)'
+ '11.94 cm (4.7 inch)' '15.06 cm (5.93 inch)' '15.75 cm (6.2 inch)'
+ '15.72 cm (6.19 inch)' '14.35 cm (5.65 inch)' '15.19 cm (5.98 inch)'
+ '15.77 cm (6.21 inch)' '15.7 cm (6.18 inch)' '15.82 cm (6.23 inch)']
+
+
+resolution ['1600 x 720 Pixels' '2340 x 1080 pixels' '2400 x 1080 Pixels'
+ '1080 x 2340 Pixels' '1080 x 2400 Pixels' '720 x 1600 Pixels'
+ '1560 x 720 pixels' '2400 × 1080 Pixels' '1520 x 720 pixels'
+ '1520 x 720 Pixels' '2400 x 1080 pixel' '1560 x 720 Pixels'
+ '2160 x 1080 Pixels' '1440 x 720 pixels' '2280 x 1080 pixels'
+ '2160 x 1080 pixels' '2340 x 1080 Pixel' '1920 x 1080 Pixels'
+ '1520 x 720$$Pixels' '1520 x 720$$pixel' '2280 x 1080$$Pixels'
+ '1920 x 1080 pixels' '2400 x 1080 Pixel' '1280 x 720 pixels'
+ '2400 x 1080$$pixel' '1280 x 720 Pixels' '720 x 1544 pixels'
+ '720 x 1544 Pixels' '2340 x 1080 Pixels' '2316 x 1080 pixels'
+ '2280 x 1080 Pixels' '1440 x 720 Pixels' '1440 x 720 Pixel'
+ '1520 x 720$$ pixels' '1520 x 720$pixels' '2340 x 1080$$pixel'
+ '2340 x 1080$$Pixel' '960 x 540 Pixels' '540 x 960 Pixels'
+ '1080 x 2160 pixels' '1500 x 720 pixels' '720 x 1440 Pixels'
+ '720*1440 Pixels' '1080 x 1920 Pixels' '720 x 1520 pixels'
+ '1080 x 2340 pixels' '720 x 1560 pixels' '720 x 1280']
+
+
+os ['Android 10' 'Android Pie 9.0' 'Android Pie 9' 'Android Oreo 8.1'
+ 'Android Pie 10' 'Android Nougat 7.1.1' 'Android Oreo 8.0'
+ 'Android Nougat 7.1.2' 'Android KitKat 4.4.2' 'Android Marshmallow 6.0.1'
+ 'Android Nougat 7.1' 'Android Marshmallow 6' 'Android Nougat 7'
+ 'Android Lollipop 5.4.1' 'Android Oreo 8.1.0' 'Android Oreo 8'
+ 'Android Lollipop 5.1' 'Android Lollipop 5.1.1']
+
+
+num_cores ['Octa Core' 'Quad Core' 'Single Core']
+
+
+mp_speed ['2 GHz' '2.3 GHz' '2.96 GHz' '1.95 GHz' '2.8 GHz' '2.05 GHz' '2.2 GHz'
+ '2.1 GHz' '2.84 GHz' '2.5 GHz' '1.8 GHz' '1.4 GHz' '1.5 GHz' '1.3 GHz'
+ '1.6 GHz' '2.39 GHz' '2.6 GHz' '2.649 GHz']
+
+
+int_memory ['32 GB' '64 GB' '128 GB' '256 GB' '16 GB' '512 GB' '8 GB']
+
+
+ram ['3 GB' '4 GB' '6 GB' '8 GB' '12 GB' '2 GB' '1 GB']
+
+
+p_cam ['12MP + 2MP + 2MP' '48MP + 8MP + 2MP + 2MP'
+ '48MP + 8MP + 2MP + 2MP Quad Camera' '64MP + 13MP + 8MP + 2MP'
+ '16MP + 2MP' '64MP + 8MP + 2MP + 2MP Quad Camera'
+ '64MP + 12MP + 8MP + 2MP' '12MP + 2MP' '64MP + 8MP + 2MP + 2MP'
+ '13MP + 2MP' '64MP + 8MP + 8MP + 2MP' '48MP + 13MP + 8MP'
+ '48MP + 8MP + 5MP + 2MP' '48MP + 8MP + 2MP' '48MP + 5MP'
+ '12MP Rear Camera' '12MP + 5MP' '20MP + 12MP' '108MP Rear Camera'
+ '13MP Rear Camera' '48MP + 8MP' '64MP + 8MP + 5MP + 2MP'
+ '8MP Rear Camera' '13MP + 2MP + 8MP' '13MP + 8MP + 2MP'
+ '13MP + 8MP + 2MP + 2MP' '16MP + 2MP + 8MP' '16MP + 8MP + 2MP'
+ '48MP + 5MP + 8MP'
+ '48 Million Quad Pixel Sensor (12 Million Effective Pixel) + 8MP + 5MP, AI Triple Rear Camera'
+ '48MP + 13MP + 8MP + 2MP' '12MP + 5MP + 8MP' '16MP Rear Camera'
+ '16MP + 5MP' '48MP + 8MP + 5MP' '64MP + 8MP + 5MP + 5MP'
+ '48MP + 12MP + 5MP' '5MP Rear Camera'
+ '48 MP + 2 MP + 2 MP + Low Light Sensor'
+ '13 MP + 2 MP + 2 MP + Low Light Sensor' '48MP + 2MP + Low Light Sensor'
+ '16MP + 2MP + Low Light Sensor' '12MP + 13MP'
+ '13MP + 2MP Depth Sensor + 8MP Wide Angle sensor'
+ '16MP + 5MP + 2MP + Low Light Sensor' '12MP + 8MP + 2MP + 2MP'
+ '48MP + 8MP + 13MP + 2MP' '16MP + 20MP' '12MP + 20MP']
+
+
+f_cam ['5MP Front Camera' '16MP Front Camera' '32MP + 8MP Dual Front Camera'
+ '16MP + 8MP Dual Front Camera' '13MP Front Camera' '32MP Front Camera'
+ '8MP Front Camera' '20MP Front Camera' '20MP + 2MP Dual Front Camera'
+ '2MP Front Camera' '8MP Dual Front Camera' '25MP Front Camera'
+ '24MP Front Camera' '13MP + 2MP Dual Front Camera'
+ '44MP + 2MP Dual Front Camera']
+
+
+network ['4G VOLTE, 4G, 3G, 2G' '3G, 4G VOLTE, 2G' '3G, 4G VOLTE, 4G, 2G'
+ '3G, 4G, 2G' '4G, 2G, 3G' '5G, 4G VOLTE, 4G, 3G, 2G' '4G VOLTE, 3G, 2G'
+ '4G VOLTE, 3G' '4G VOLTE, 4G, 2G, 3G' '4G VOLTE, 5G' '3G, 4G VOLTE, 4G'
+ '3G' '4G VOLTE' '3G, 4G VOLTE' '2G' '4G, 3G, 2G' '3G, 4G' '4G VOLTE, 4G']
+
+
+bluetooth ['Yes']
+
+
+battery_power ['5000 mAh' '4035 mAh' '4000 mAh' '3500 mAh' '4200 mAh' '4300 mAh'
+ '4230 mAh' '5020 mAh' '4030 mAh' '3400 mAh' '3080 mAh' '3010 mAh'
+ '4780 mAh' '3050 mAh' '4100 mAh' '3000 mAh' '4500 mAh' '3700 mAh'
+ '3260 mAh' '3360 mAh' '3225 mAh' '2730 mAh' '6000 mAh' '2600 mAh'
+ '2000 mAh' '3600 mAh' '4350 mAh' '4025 mAh' '4065 mAh' '3730 mAh'
+ '3180 mAh' '4020 mAh' '3075 mAh' '3200 mAh']
+
+
+mob_width ['75 mm' '75.4 mm' '74.2 mm' '75.7 mm' '74 mm' '75.16 mm' '74.24 mm'
+ '74.8 mm' '75.8 mm' '73.7 mm' '75.6 mm' '75.2 mm' '75.41 mm' '74.3 mm'
+ '76.68 mm' '71.85 mm' '75.21 mm' '75.49 mm' '77.26 mm' '76.4 mm'
+ '75.35 mm' '73.6 mm' '9 mm' '8.35 mm' '76 mm' '70.1 mm' '70.4 mm'
+ '71.5 mm' '75.58 mm' '76.2 mm' '76.77 mm' '75.23 mm' '75.19 mm'
+ '75.09 mm' '76.46 mm' '77.33 mm' '76.47 mm' '75.04 mm' '74.17 mm'
+ '74.71 mm' '74.7 mm' '75.08 mm' '77 mm' '75.03 mm' '75.93 mm' '72.8 mm'
+ '75.24 mm' '75.74 mm' '72.9 mm' '159 mm' '75.3 mm' '72.1 mm' '69 mm'
+ '152.4 mm' '76.8 mm' '76.88 mm' '75.25 mm' '72.85 mm' '82.38 mm'
+ '76.6 mm' '75.5 mm' '73.3 mm' '73.4 mm' '76.1 mm' '77.2 mm' '73.1 mm'
+ '77.35 mm' '74.6 mm' '154.5 mm' '73.8 mm']
+
+
+mob_height ['164.4 mm' '157 mm' '161 mm' '156.7 mm' '158.7 mm' '158.96 mm' '162.1 mm'
+ '163.9 mm' '154.3 mm' '163.8 mm' '156.1 mm' '156.48 mm' '165.75 mm'
+ '153.48 mm' '159.21 mm' '151.86 mm' '160.73 mm' '157.9 mm' '162.58 mm'
+ '158.58 mm' '144 mm' '175 mm' '158.3 mm' '151 mm' '165.5 mm' '140.4 mm'
+ '146.3 mm' '147.5 mm' '158.73 mm' '153 mm' '159.43 mm' '159.53 mm'
+ '159.25 mm' '155.11 mm' '162.04 mm' '162.39 mm' '162.15 mm' '159.64 mm'
+ '159.01 mm' '157.25 mm' '159 mm' '157.91 mm' '162 mm' '155.06 mm'
+ '154.81 mm' '161.97 mm' '149.3 mm' '155.21 mm' '155.87 mm' '149.9 mm'
+ '154.6 mm' '9 mm' '163.6 mm' '143.4 mm' '162.5 mm' '136.5 mm' '152.4 mm'
+ '78.6 mm' '165 mm' '158 mm' '158.25 mm' '153.9 mm' '164 mm' '166.38 mm'
+ '156 mm' '155.5 mm' '165.3 mm' '155.9 mm' '160.2 mm' '158.8 mm'
+ '161.3 mm' '160 mm' '161.8 mm' '150.5 mm' '154.4 mm' '156.2 mm'
+ '157.6 mm' '154.5 mm' '7.38 mm' '148.1 mm' '153.3 mm']
+
+
+mob_depth ['8.95 mm' '9 mm' '8.9 mm' '8.7 mm' '8.5 mm' '8.55 mm' '9.65 mm' '9.6 mm'
+ '9.4 mm' '9.3 mm' '8.6 mm' '8.3 mm' '8.8 mm' '8.475 mm' '8.1 mm' '7.7 mm'
+ '8.26 mm' '7.3 mm' '8.96 mm' '8.05 mm' '92 mm' '75.3 mm' '8.4 mm'
+ '8.35 mm' '9.55 mm' '8.47 mm' '8.92 mm' '8.13 mm' '8.68 mm' '8.28 mm'
+ '9.11 mm' '8.85 mm' '8.89 mm' '8.54 mm' '8.21 mm' '9.8 mm' '7.9 mm'
+ '7.98 mm' '7.77 mm' '7.89 mm' '7.8 mm' '7.5 mm' '75 mm' '7.6 mm'
+ '8.65 mm' '7.95 mm' '8.79 mm' '9.1 mm' '8.2 mm' '9.5 mm' '8.67 mm'
+ '7.4 mm' '7.99 mm' '7.38 mm' '76 mm']
+
+
+mob_weight ['195 g' '199 g' '184 g' '174 g' '183 g' '207 g' '191 g' '166 g' '198 g'
+ '182 g' '202 g' '175 g' '188 g' '209 g' '173.8 g' '186 g' '185 g' '168 g'
+ '181 g' '145 g' '190 g' '165 g' '137 g' '146 g' '180 g' '154 g' '190.5 g'
+ '189.6 g' '186.7 g' '163.5 g' '197 g' '201 g' '193 g' '186.5 g' '176 g'
+ '179 g' '201.8 g' '156 g' '148 g' '150 g' '189.5 g' '139 g' '151 g'
+ '160 g' '142 g' '143 g' '162.8 g' '187 g' '130 g' '178 g' '170 g' '194 g'
+ '159 g' '155 g' '208 g' '172 g' '192 g' '215 g' '189 g' '169 g' '158 g'
+ '153 g']
+
+
+# to know numeric columns
+df._get_numeric_data()
+0
+1
+2
+3
+4
+...
+454
+455
+456
+457
+458
+459 rows × 0 columns
+
+# Maintain a copy of initial data as such for future reference and comparison, if needed
+
+initial_df = df
+# Also maintain a dictionary(or mapping) to maintain the list of columns which are cleaned
+# from collections import defaultdict
+
+# status = defaultdict(lambda: 0)
+
+status = dict(zip(df.columns,list([0]*len(df.columns))))
+status
+{'mobile_name': 0,
+ 'mobile_price': 0,
+ 'mobile_color': 0,
+ 'dual_sim': 0,
+ 'disp_size': 0,
+ 'resolution': 0,
+ 'os': 0,
+ 'num_cores': 0,
+ 'mp_speed': 0,
+ 'int_memory': 0,
+ 'ram': 0,
+ 'p_cam': 0,
+ 'f_cam': 0,
+ 'network': 0,
+ 'bluetooth': 0,
+ 'battery_power': 0,
+ 'mob_width': 0,
+ 'mob_height': 0,
+ 'mob_depth': 0,
+ 'mob_weight': 0}
+def print_processed_status(df):
+    for col in df.columns:
+        print(col, status[col])
+print_processed_status(df)
+mobile_name 0
+mobile_price 0
+mobile_color 0
+dual_sim 0
+disp_size 0
+resolution 0
+os 0
+num_cores 0
+mp_speed 0
+int_memory 0
+ram 0
+p_cam 0
+f_cam 0
+network 0
+bluetooth 0
+battery_power 0
+mob_width 0
+mob_height 0
+mob_depth 0
+mob_weight 0
+Some columns seem to have data which can easily be made numeric by removing strings from it. For example, Rs.,Pixels,mm,mp etc. Try to remove them and check the correlation(relationship) with mobile_price
+
+def numericize(df,col):
+    return pd.to_numeric(df[col].str.replace('[a-zA-Z]','',regex=True))
+df.head()
+mobile_name	mobile_price	mobile_color	dual_sim	disp_size	resolution	os	num_cores	mp_speed	int_memory	ram	p_cam	f_cam	network	bluetooth	battery_power	mob_width	mob_height	mob_depth	mob_weight
+0	Realme Narzo 10A (So White, 32 GB)	₹8,999	So White	Dual Sim	16.56 cm (6.52 inch)	1600 x 720 Pixels	Android 10	Octa Core	2 GHz	32 GB	3 GB	12MP + 2MP + 2MP	5MP Front Camera	4G VOLTE, 4G, 3G, 2G	Yes	5000 mAh	75 mm	164.4 mm	8.95 mm	195 g
+1	Realme Narzo 10A (So Blue, 32 GB)	₹8,999	So Blue	Dual Sim	16.56 cm (6.52 inch)	1600 x 720 Pixels	Android 10	Octa Core	2 GHz	32 GB	3 GB	12MP + 2MP + 2MP	5MP Front Camera	4G VOLTE, 4G, 3G, 2G	Yes	5000 mAh	75 mm	164.4 mm	8.95 mm	195 g
+2	Realme Narzo 10A (So Blue, 64 GB)	₹9,999	So Blue	Dual Sim	16.56 cm (6.52 inch)	1600 x 720 Pixels	Android 10	Octa Core	2 GHz	64 GB	4 GB	12MP + 2MP + 2MP	5MP Front Camera	4G VOLTE, 4G, 3G, 2G	Yes	5000 mAh	75 mm	164.4 mm	8.95 mm	195 g
+3	Realme Narzo 10A (So White, 64 GB)	₹9,999	So White	Dual Sim	16.56 cm (6.52 inch)	1600 x 720 Pixels	Android 10	Octa Core	2 GHz	64 GB	4 GB	12MP + 2MP + 2MP	5MP Front Camera	4G VOLTE, 4G, 3G, 2G	Yes	5000 mAh	75 mm	164.4 mm	8.95 mm	195 g
+4	Realme Narzo 10 (That Green, 128 GB)	₹11,999	That Green	Dual Sim	16.51 cm (6.5 inch)	1600 x 720 Pixels	Android 10	Octa Core	2 GHz	128 GB	4 GB	48MP + 8MP + 2MP + 2MP	16MP Front Camera	4G VOLTE, 4G, 3G, 2G	Yes	5000 mAh	75.4 mm	164.4 mm	9 mm	199 g
+df['mp_speed'] = numericize(df,'mp_speed')
+df['mp_speed'].unique()
+status['mp_speed'] = 1
+df['int_memory'] = numericize(df,'int_memory')
+df['int_memory'].unique()
+status['int_memory'] = 1
+df['ram'] = numericize(df,'ram')
+df['ram'].unique()
+status['ram'] = 1
+df['battery_power'] = numericize(df,'battery_power')
+df['battery_power'].unique()
+status['battery_power'] = 1
+df['mob_width'] = numericize(df,'mob_width')
+df['mob_width'].unique()
+status['mob_width'] = 1
+df['mob_height'] = numericize(df,'mob_height')
+df['mob_height'].unique()
+status['mob_height'] = 1
+df['mob_depth'] = numericize(df,'mob_depth')
+df['mob_depth'].unique()
+status['mob_depth'] = 1
+df['mob_weight'] = numericize(df,'mob_weight')
+df['mob_weight'].unique()
+status['mob_weight'] = 1
+# Checking again how many numeric columns are present for easily doing a relationship analysis
+
+df._get_numeric_data()
+mp_speed	int_memory	ram	battery_power	mob_width	mob_height	mob_depth	mob_weight
+0	2.0	32	3	5000	75.0	164.4	8.95	195.0
+1	2.0	32	3	5000	75.0	164.4	8.95	195.0
+2	2.0	64	4	5000	75.0	164.4	8.95	195.0
+3	2.0	64	4	5000	75.0	164.4	8.95	195.0
+4	2.0	128	4	5000	75.4	164.4	9.00	199.0
+...	...	...	...	...	...	...	...	...
+454	2.5	32	3	3180	73.1	150.5	7.70	143.0
+455	2.5	16	2	3180	73.1	150.5	7.70	143.0
+456	2.0	64	4	3400	75.3	156.0	7.80	158.0
+457	2.1	128	4	4020	76.1	162.0	8.30	188.0
+458	2.1	128	4	4020	76.1	162.0	8.30	188.0
+459 rows × 8 columns
+
+df.head()
+mobile_name	mobile_price	mobile_color	dual_sim	disp_size	resolution	os	num_cores	mp_speed	int_memory	ram	p_cam	f_cam	network	bluetooth	battery_power	mob_width	mob_height	mob_depth	mob_weight
+0	Realme Narzo 10A (So White, 32 GB)	₹8,999	So White	Dual Sim	16.56 cm (6.52 inch)	1600 x 720 Pixels	Android 10	Octa Core	2.0	32	3	12MP + 2MP + 2MP	5MP Front Camera	4G VOLTE, 4G, 3G, 2G	Yes	5000	75.0	164.4	8.95	195.0
+1	Realme Narzo 10A (So Blue, 32 GB)	₹8,999	So Blue	Dual Sim	16.56 cm (6.52 inch)	1600 x 720 Pixels	Android 10	Octa Core	2.0	32	3	12MP + 2MP + 2MP	5MP Front Camera	4G VOLTE, 4G, 3G, 2G	Yes	5000	75.0	164.4	8.95	195.0
+2	Realme Narzo 10A (So Blue, 64 GB)	₹9,999	So Blue	Dual Sim	16.56 cm (6.52 inch)	1600 x 720 Pixels	Android 10	Octa Core	2.0	64	4	12MP + 2MP + 2MP	5MP Front Camera	4G VOLTE, 4G, 3G, 2G	Yes	5000	75.0	164.4	8.95	195.0
+3	Realme Narzo 10A (So White, 64 GB)	₹9,999	So White	Dual Sim	16.56 cm (6.52 inch)	1600 x 720 Pixels	Android 10	Octa Core	2.0	64	4	12MP + 2MP + 2MP	5MP Front Camera	4G VOLTE, 4G, 3G, 2G	Yes	5000	75.0	164.4	8.95	195.0
+4	Realme Narzo 10 (That Green, 128 GB)	₹11,999	That Green	Dual Sim	16.51 cm (6.5 inch)	1600 x 720 Pixels	Android 10	Octa Core	2.0	128	4	48MP + 8MP + 2MP + 2MP	16MP Front Camera	4G VOLTE, 4G, 3G, 2G	Yes	5000	75.4	164.4	9.00	199.0
+# Clean the mobile price column also so that we can compare it as a number with other columns
+
+def edit_numericize(df,col,strs_to_remove):
+    processed = df[col]
+    for string in strs_to_remove:
+        processed = processed.str.replace(string,'',regex=False)
+    return pd.to_numeric(processed)
+df['mobile_price'] = edit_numericize(df,'mobile_price',['₹',','])
+df['mobile_price'].unique()
+status['mobile_price'] = 1
+# correlation map
+import seaborn as sns
+import numpy as np
+
+mask = np.zeros_like(df.corr())
+mask[np.triu_indices_from(mask)] = True
+
+sns.heatmap(df.corr(),mask=mask, annot=True)
+<AxesSubplot:>
+
+View it as a sorted list of factors with increasing order of correlation
+
+def plot_correlation_with_col(df, col):
+    sorted_corr = df.corr().sort_values(col)[col][:-1]
+    sorted_corr.plot(kind='bar',figsize = (10,5))
+plot_correlation_with_col(df,'mobile_price')
+
+Ram, internal memory, mp speed, mob weight seem to be related to some extend in the same order
+
+df.head()
+mobile_name	mobile_price	mobile_color	dual_sim	disp_size	resolution	os	num_cores	mp_speed	int_memory	ram	p_cam	f_cam	network	bluetooth	battery_power	mob_width	mob_height	mob_depth	mob_weight
+0	Realme Narzo 10A (So White, 32 GB)	8999	So White	Dual Sim	16.56 cm (6.52 inch)	1600 x 720 Pixels	Android 10	Octa Core	2.0	32	3	12MP + 2MP + 2MP	5MP Front Camera	4G VOLTE, 4G, 3G, 2G	Yes	5000	75.0	164.4	8.95	195.0
+1	Realme Narzo 10A (So Blue, 32 GB)	8999	So Blue	Dual Sim	16.56 cm (6.52 inch)	1600 x 720 Pixels	Android 10	Octa Core	2.0	32	3	12MP + 2MP + 2MP	5MP Front Camera	4G VOLTE, 4G, 3G, 2G	Yes	5000	75.0	164.4	8.95	195.0
+2	Realme Narzo 10A (So Blue, 64 GB)	9999	So Blue	Dual Sim	16.56 cm (6.52 inch)	1600 x 720 Pixels	Android 10	Octa Core	2.0	64	4	12MP + 2MP + 2MP	5MP Front Camera	4G VOLTE, 4G, 3G, 2G	Yes	5000	75.0	164.4	8.95	195.0
+3	Realme Narzo 10A (So White, 64 GB)	9999	So White	Dual Sim	16.56 cm (6.52 inch)	1600 x 720 Pixels	Android 10	Octa Core	2.0	64	4	12MP + 2MP + 2MP	5MP Front Camera	4G VOLTE, 4G, 3G, 2G	Yes	5000	75.0	164.4	8.95	195.0
+4	Realme Narzo 10 (That Green, 128 GB)	11999	That Green	Dual Sim	16.51 cm (6.5 inch)	1600 x 720 Pixels	Android 10	Octa Core	2.0	128	4	48MP + 8MP + 2MP + 2MP	16MP Front Camera	4G VOLTE, 4G, 3G, 2G	Yes	5000	75.4	164.4	9.00	199.0
+disp_size seems to have both cm and inch info. Choose one among them and numericize it
+
+def replace_regex_numericize(df,col,chars_to_remove):
+    processed = df[col]
+    for char in chars_to_remove:
+        processed = processed.str.replace(char,'',regex=True)
+    return pd.to_numeric(processed)
+# edit_numericize
+df['disp_size'] = replace_regex_numericize(df,'disp_size',[' cm .*'])
+df['disp_size'].unique()
+status['disp_size'] = 1
+plot_correlation_with_col(df,'mobile_price')
+
+df.head()
+mobile_name	mobile_price	mobile_color	dual_sim	disp_size	resolution	os	num_cores	mp_speed	int_memory	ram	p_cam	f_cam	network	bluetooth	battery_power	mob_width	mob_height	mob_depth	mob_weight
+0	Realme Narzo 10A (So White, 32 GB)	8999	So White	Dual Sim	16.56	1600 x 720 Pixels	Android 10	Octa Core	2.0	32	3	12MP + 2MP + 2MP	5MP Front Camera	4G VOLTE, 4G, 3G, 2G	Yes	5000	75.0	164.4	8.95	195.0
+1	Realme Narzo 10A (So Blue, 32 GB)	8999	So Blue	Dual Sim	16.56	1600 x 720 Pixels	Android 10	Octa Core	2.0	32	3	12MP + 2MP + 2MP	5MP Front Camera	4G VOLTE, 4G, 3G, 2G	Yes	5000	75.0	164.4	8.95	195.0
+2	Realme Narzo 10A (So Blue, 64 GB)	9999	So Blue	Dual Sim	16.56	1600 x 720 Pixels	Android 10	Octa Core	2.0	64	4	12MP + 2MP + 2MP	5MP Front Camera	4G VOLTE, 4G, 3G, 2G	Yes	5000	75.0	164.4	8.95	195.0
+3	Realme Narzo 10A (So White, 64 GB)	9999	So White	Dual Sim	16.56	1600 x 720 Pixels	Android 10	Octa Core	2.0	64	4	12MP + 2MP + 2MP	5MP Front Camera	4G VOLTE, 4G, 3G, 2G	Yes	5000	75.0	164.4	8.95	195.0
+4	Realme Narzo 10 (That Green, 128 GB)	11999	That Green	Dual Sim	16.51	1600 x 720 Pixels	Android 10	Octa Core	2.0	128	4	48MP + 8MP + 2MP + 2MP	16MP Front Camera	4G VOLTE, 4G, 3G, 2G	Yes	5000	75.4	164.4	9.00	199.0
+def replace_regex(df,col,chars_to_remove):
+    processed = df[col]
+    for char in chars_to_remove:
+        processed = processed.str.replace(char,'',regex=True)
+    return processed
+df['mobile_name_brand'] = replace_regex(df, 'mobile_name', [' \(.*\)'])
+df['mobile_name_brand'].unique()
+array(['Realme Narzo 10A', 'Realme Narzo 10', 'Realme 5 Pro',
+       'Realme X2 Pro', 'Realme 2 Pro', 'Realme XT', 'Realme X50 Pro',
+       'Realme C3', 'Realme 6', 'Realme 6 Pro', 'Realme C2', 'Realme 5s',
+       'Realme X2', 'Realme X3', 'Realme X3 SuperZoom', 'Realme 3',
+       'Redmi 8', 'Redmi K20 Pro', 'Redmi Note 9 Pro', 'Mi A3',
+       'Redmi Note 7 Pro', 'Mi Mix 2', 'Redmi K20', 'Redmi Y2',
+       'Redmi Note 6 Pro', 'Mi A2', 'Mi 10', 'Redmi Note 5 Pro', 'MI3',
+       'Redmi 8A Dual', 'Redmi Note 8', 'Redmi Note 4',
+       'Redmi Note 9 Pro Max', 'Redmi 8A', 'Redmi Go', 'Redmi Note 7S',
+       'Redmi 7A', 'Redmi Note 7', 'Redmi 6', 'Redmi Y3', 'Redmi Y1',
+       'Vivo Y12', 'Vivo U10', 'Vivo Y11', 'Vivo Z1x', 'Vivo Y15',
+       'Vivo S1 Pro', 'Vivo Y91i', 'Vivo Y50', 'Vivo Z1Pro', 'Vivo Y19',
+       'Vivo V19', 'Vivo V17', 'Vivo S1', 'Vivo V15 Pro', 'Vivo Y17',
+       'Vivo V17Pro', 'Vivo V11 Pro', 'Vivo NEX', 'Vivo Y81',
+       'Vivo V9 Youth', 'Vivo V15', 'Vivo Y93', 'Vivo Y91', 'Vivo V7',
+       'Vivo Y83', 'Vivo V9', 'Vivo Y71i', 'Vivo V9 Pro', 'Vivo Y71',
+       'Vivo V7+', 'Vivo Y55S', 'Vivo Y81i', 'Vivo Y69',
+       'Samsung Galaxy M30S', 'Samsung Galaxy A21s', 'Samsung Galaxy M21',
+       'Samsung Galaxy J2 Core', 'Samsung Galaxy M31',
+       'Samsung Galaxy S10 Lite', 'Samsung Galaxy J2-2017',
+       'Samsung Galaxy J7 Pro', 'Samsung Galaxy J7 Nxt',
+       'Infinix Hot 9 Pro', 'Infinix Hot 9', 'Infinix Note 5 Stylus',
+       'Infinix S5 Pro', 'Infinix Hot S3X', 'Infinix Note 5',
+       'Infinix Hot 7', 'Infinix Hot S3', 'Infinix S5 Lite',
+       'Infinix Zero 5 Pro', 'Infinix S4', 'Infinix S5', 'Infinix Zero 5',
+       'POCO F1', 'POCO X2', 'POCO X2 Special Edition', 'POCO M2 Pro',
+       'OPPO A31', 'OPPO A9 2020', 'OPPO A12', 'OPPO A5s', 'OPPO F15',
+       'OPPO A52', 'OPPO A11K', 'OPPO Reno3 Pro', 'OPPO F11 Pro',
+       'OPPO Reno 10x Zoom', 'OPPO Reno2', 'OPPO Find X', 'OPPO Reno2 Z',
+       'OPPO A83', 'OPPO K1', 'OPPO F9 Pro', 'OPPO F11', 'OPPO A1K',
+       'OPPO A7', 'OPPO A3s', 'OPPO R17 Pro', 'OPPO F7', 'OPPO F1S',
+       'OPPO A71k', 'OPPO F3', 'OPPO A5', 'OPPO F9'], dtype=object)
+df['mobile_name_brand_short'] = replace_regex(df, 'mobile_name', [' .*'])
+df['mobile_name_brand_short'].unique()
+array(['Realme', 'Redmi', 'Mi', 'MI3', 'Vivo', 'Samsung', 'Infinix',
+       'POCO', 'OPPO'], dtype=object)
+def convert_words_to_num(df,cat_col):
+    return df[cat_col].astype('category').cat.codes
+df['mobile_name_brand_new'] = convert_words_to_num(df,'mobile_name_brand')
+df['mobile_name_brand_short_new'] = convert_words_to_num(df,'mobile_name_brand')
+plot_correlation_with_col(df,'mobile_price')
+
+status['mobile_name'] = 1
+df.head()
+mobile_name	mobile_price	mobile_color	dual_sim	disp_size	resolution	os	num_cores	mp_speed	int_memory	...	bluetooth	battery_power	mob_width	mob_height	mob_depth	mob_weight	mobile_name_brand	mobile_name_brand_short	mobile_name_brand_new	mobile_name_brand_short_new
+0	Realme Narzo 10A (So White, 32 GB)	8999	So White	Dual Sim	16.56	1600 x 720 Pixels	Android 10	Octa Core	2.0	32	...	Yes	5000	75.0	164.4	8.95	195.0	Realme Narzo 10A	Realme	58	58
+1	Realme Narzo 10A (So Blue, 32 GB)	8999	So Blue	Dual Sim	16.56	1600 x 720 Pixels	Android 10	Octa Core	2.0	32	...	Yes	5000	75.0	164.4	8.95	195.0	Realme Narzo 10A	Realme	58	58
+2	Realme Narzo 10A (So Blue, 64 GB)	9999	So Blue	Dual Sim	16.56	1600 x 720 Pixels	Android 10	Octa Core	2.0	64	...	Yes	5000	75.0	164.4	8.95	195.0	Realme Narzo 10A	Realme	58	58
+3	Realme Narzo 10A (So White, 64 GB)	9999	So White	Dual Sim	16.56	1600 x 720 Pixels	Android 10	Octa Core	2.0	64	...	Yes	5000	75.0	164.4	8.95	195.0	Realme Narzo 10A	Realme	58	58
+4	Realme Narzo 10 (That Green, 128 GB)	11999	That Green	Dual Sim	16.51	1600 x 720 Pixels	Android 10	Octa Core	2.0	128	...	Yes	5000	75.4	164.4	9.00	199.0	Realme Narzo 10	Realme	57	57
+5 rows × 24 columns
+
+df['mobile_color_cat'] = convert_words_to_num(df,'mobile_color')
+df['dual_sim_cat'] = convert_words_to_num(df,'dual_sim')
+df['resolution_cat'] = convert_words_to_num(df,'resolution')
+df['os_cat'] = convert_words_to_num(df,'os')
+df['num_cores_cat'] = convert_words_to_num(df,'num_cores')
+df['f_cam_cat'] = convert_words_to_num(df,'f_cam')
+df['network_cat'] = convert_words_to_num(df,'network')
+status['mobile_color'] = 1
+status['dual_sim'] = 1
+status['resolution'] = 1
+status['os'] = 1
+status['num_cores'] = 1
+status['f_cam'] = 1
+status['network'] = 1
+# status['mobile_color'] = 1 Let us see the result and values to be sure
+# status['dual_sim'] = 1 Let us see the result and values to be sure
+# status['resolution'] = 1 Let us see the result and values to be sure
+# status['os'] = 1 Let us see the result and values to be sure
+# status['num_cores'] = 1 Let us see the result and values to be sure
+# status['f_cam'] = 1 Let us see the result and values to be sure
+# status['network'] = 1 Let us see the result and values to be sure
+status
+{'mobile_name': 1,
+ 'mobile_price': 1,
+ 'mobile_color': 1,
+ 'dual_sim': 1,
+ 'disp_size': 1,
+ 'resolution': 1,
+ 'os': 1,
+ 'num_cores': 1,
+ 'mp_speed': 1,
+ 'int_memory': 1,
+ 'ram': 1,
+ 'p_cam': 0,
+ 'f_cam': 1,
+ 'network': 1,
+ 'bluetooth': 0,
+ 'battery_power': 1,
+ 'mob_width': 1,
+ 'mob_height': 1,
+ 'mob_depth': 1,
+ 'mob_weight': 1}
+plot_correlation_with_col(df,'mobile_price')
+
+Some columns seem to have values which are in words, but represents a number. Convert them
+
+df['dual_sim'].unique()
+array(['Dual Sim', 'Single Sim'], dtype=object)
+df['dual_sim_ord'] = df['dual_sim'].replace('Dual Sim',2).replace('Single Sim',1)
+df['num_cores'].unique()
+array(['Octa Core', 'Quad Core', 'Single Core'], dtype=object)
+df['num_cores_ord'] = df['num_cores'].replace('Octa Core',8).replace('Quad Core',4).replace('Single Core',1)
+plot_correlation_with_col(df,'mobile_price')
+
+def plot_grouped_correlation_with_col(df, col):
+    sorted_corr = df.corr().sort_values(col)[col][:-1]
+    sorted_corr.sort_index().plot(kind='bar',figsize = (10,5))
+plot_grouped_correlation_with_col(df,'mobile_price')
+
+Checking rest of the columns one by one. Probably there is more scope of cleaning in the negatively correlated ones
+
+df['battery_power'].unique()
+array([5000, 4035, 4000, 3500, 4200, 4300, 4230, 5020, 4030, 3400, 3080,
+       3010, 4780, 3050, 4100, 3000, 4500, 3700, 3260, 3360, 3225, 2730,
+       6000, 2600, 2000, 3600, 4350, 4025, 4065, 3730, 3180, 4020, 3075,
+       3200], dtype=int64)
+df['disp_size'].unique()
+array([16.56, 16.51, 16.  , 16.26, 16.36, 16.76, 15.49, 16.69, 15.8 ,
+       16.23, 16.94, 15.44, 15.21, 15.9 , 12.7 , 15.46, 13.97, 13.84,
+       16.13, 16.21, 16.59, 16.28, 16.74, 14.48, 15.24, 13.21, 17.02,
+       11.94, 15.06, 15.75, 15.72, 14.35, 15.19, 15.77, 15.7 , 15.82])
+df['f_cam'].unique()
+array(['5MP Front Camera', '16MP Front Camera',
+       '32MP + 8MP Dual Front Camera', '16MP + 8MP Dual Front Camera',
+       '13MP Front Camera', '32MP Front Camera', '8MP Front Camera',
+       '20MP Front Camera', '20MP + 2MP Dual Front Camera',
+       '2MP Front Camera', '8MP Dual Front Camera', '25MP Front Camera',
+       '24MP Front Camera', '13MP + 2MP Dual Front Camera',
+       '44MP + 2MP Dual Front Camera'], dtype=object)
+More cleaning should be possible for f_cam if we represent main/overall f_cam MP as a number
+
+df['f_cam_ord'] = replace_regex_numericize(df,'f_cam',['MP.*'])
+plot_grouped_correlation_with_col(df,'mobile_price')
+
+df['mob_depth'].unique()
+array([ 8.95 ,  9.   ,  8.9  ,  8.7  ,  8.5  ,  8.55 ,  9.65 ,  9.6  ,
+        9.4  ,  9.3  ,  8.6  ,  8.3  ,  8.8  ,  8.475,  8.1  ,  7.7  ,
+        8.26 ,  7.3  ,  8.96 ,  8.05 , 92.   , 75.3  ,  8.4  ,  8.35 ,
+        9.55 ,  8.47 ,  8.92 ,  8.13 ,  8.68 ,  8.28 ,  9.11 ,  8.85 ,
+        8.89 ,  8.54 ,  8.21 ,  9.8  ,  7.9  ,  7.98 ,  7.77 ,  7.89 ,
+        7.8  ,  7.5  , 75.   ,  7.6  ,  8.65 ,  7.95 ,  8.79 ,  9.1  ,
+        8.2  ,  9.5  ,  8.67 ,  7.4  ,  7.99 ,  7.38 , 76.   ])
+Some values seem to be 92 and 75 which are outliers or out of the general range. Something has gone wrong in this data collection. So check mob height and width too for confirmation.
+
+df['mob_width'].unique()
+array([ 75.  ,  75.4 ,  74.2 ,  75.7 ,  74.  ,  75.16,  74.24,  74.8 ,
+        75.8 ,  73.7 ,  75.6 ,  75.2 ,  75.41,  74.3 ,  76.68,  71.85,
+        75.21,  75.49,  77.26,  76.4 ,  75.35,  73.6 ,   9.  ,   8.35,
+        76.  ,  70.1 ,  70.4 ,  71.5 ,  75.58,  76.2 ,  76.77,  75.23,
+        75.19,  75.09,  76.46,  77.33,  76.47,  75.04,  74.17,  74.71,
+        74.7 ,  75.08,  77.  ,  75.03,  75.93,  72.8 ,  75.24,  75.74,
+        72.9 , 159.  ,  75.3 ,  72.1 ,  69.  , 152.4 ,  76.8 ,  76.88,
+        75.25,  72.85,  82.38,  76.6 ,  75.5 ,  73.3 ,  73.4 ,  76.1 ,
+        77.2 ,  73.1 ,  77.35,  74.6 , 154.5 ,  73.8 ])
+df['mob_height'].unique()
+array([164.4 , 157.  , 161.  , 156.7 , 158.7 , 158.96, 162.1 , 163.9 ,
+       154.3 , 163.8 , 156.1 , 156.48, 165.75, 153.48, 159.21, 151.86,
+       160.73, 157.9 , 162.58, 158.58, 144.  , 175.  , 158.3 , 151.  ,
+       165.5 , 140.4 , 146.3 , 147.5 , 158.73, 153.  , 159.43, 159.53,
+       159.25, 155.11, 162.04, 162.39, 162.15, 159.64, 159.01, 157.25,
+       159.  , 157.91, 162.  , 155.06, 154.81, 161.97, 149.3 , 155.21,
+       155.87, 149.9 , 154.6 ,   9.  , 163.6 , 143.4 , 162.5 , 136.5 ,
+       152.4 ,  78.6 , 165.  , 158.  , 158.25, 153.9 , 164.  , 166.38,
+       156.  , 155.5 , 165.3 , 155.9 , 160.2 , 158.8 , 161.3 , 160.  ,
+       161.8 , 150.5 , 154.4 , 156.2 , 157.6 , 154.5 ,   7.38, 148.1 ,
+       153.3 ])
+Looks like the mobile dimensions were retrieved from some string and the order of height, weight, depth was not the same everywhere. Sort it to get it right
+
+for rownum, row in df.iterrows():
+    ordered_dim = sorted([row['mob_depth'],row['mob_width'],row['mob_height']])
+#     print(row['mob_depth'],row['mob_width'],row['mob_height'])
+#     print(ordered_dim)
+    df.at[rownum,'mob_depth_rearr'] = ordered_dim[0]
+    df.at[rownum,'mob_width_rearr'] = ordered_dim[1]
+    df.at[rownum,'mob_height_rearr'] = ordered_dim[2]
+df['mob_height_rearr'].unique()
+array([164.4 , 157.  , 161.  , 156.7 , 158.7 , 158.96, 162.1 , 163.9 ,
+       154.3 , 163.8 , 156.1 , 156.48, 165.75, 153.48, 159.21, 151.86,
+       160.73, 157.9 , 162.58, 158.58, 144.  , 175.  , 158.3 , 151.  ,
+       165.5 , 140.4 , 146.3 , 147.5 , 158.73, 153.  , 159.43, 159.53,
+       159.25, 155.11, 162.04, 162.39, 162.15, 159.64, 159.01, 157.25,
+       159.  , 157.91, 162.  , 155.06, 154.81, 161.97, 149.3 , 155.21,
+       155.87, 149.9 , 154.6 , 163.6 , 143.4 , 162.5 , 136.5 , 152.4 ,
+       165.  , 158.  , 158.25, 153.9 , 164.  , 166.38, 156.  , 155.5 ,
+       165.3 , 155.9 , 160.2 , 158.8 , 161.3 , 160.  , 161.8 , 150.5 ,
+       154.4 , 156.2 , 157.6 , 154.5 , 148.1 , 153.3 ])
+df['mob_width_rearr'].unique()
+array([75.  , 75.4 , 74.2 , 75.7 , 74.  , 75.16, 74.24, 74.8 , 75.8 ,
+       73.7 , 75.6 , 75.2 , 75.41, 74.3 , 76.68, 71.85, 75.21, 75.49,
+       77.26, 76.4 , 75.35, 73.6 , 92.  , 75.3 , 76.  , 70.1 , 70.4 ,
+       71.5 , 75.58, 76.2 , 76.77, 75.23, 75.19, 75.09, 76.46, 77.33,
+       76.47, 75.04, 74.17, 74.71, 74.7 , 75.08, 77.  , 75.03, 75.93,
+       72.8 , 75.24, 75.74, 72.9 , 72.1 , 69.  , 78.6 , 76.8 , 76.88,
+       75.25, 72.85, 82.38, 76.6 , 75.5 , 73.3 , 73.4 , 76.1 , 77.2 ,
+       73.1 , 77.35, 74.6 , 73.8 ])
+df['mob_depth_rearr'].unique()
+array([8.95 , 9.   , 8.9  , 8.7  , 8.5  , 8.55 , 9.65 , 9.6  , 9.4  ,
+       9.3  , 8.6  , 8.3  , 8.8  , 8.475, 8.1  , 7.7  , 8.26 , 7.3  ,
+       8.96 , 8.05 , 8.35 , 8.4  , 9.55 , 8.47 , 8.92 , 8.13 , 8.68 ,
+       8.28 , 9.11 , 8.85 , 8.89 , 8.54 , 8.21 , 9.8  , 7.9  , 7.98 ,
+       7.77 , 7.89 , 7.8  , 7.5  , 7.6  , 8.65 , 7.95 , 8.79 , 9.1  ,
+       8.2  , 9.5  , 8.67 , 7.4  , 7.99 , 7.38 ])
+plot_grouped_correlation_with_col(df,'mobile_price')
+
+df['mob_weight'].unique()
+array([195. , 199. , 184. , 174. , 183. , 207. , 191. , 166. , 198. ,
+       182. , 202. , 175. , 188. , 209. , 173.8, 186. , 185. , 168. ,
+       181. , 145. , 190. , 165. , 137. , 146. , 180. , 154. , 190.5,
+       189.6, 186.7, 163.5, 197. , 201. , 193. , 186.5, 176. , 179. ,
+       201.8, 156. , 148. , 150. , 189.5, 139. , 151. , 160. , 142. ,
+       143. , 162.8, 187. , 130. , 178. , 170. , 194. , 159. , 155. ,
+       208. , 172. , 192. , 215. , 189. , 169. , 158. , 153. ])
+df['mobile_color'].unique()
+array(['So White', 'So Blue', 'That Green', 'That White', 'Crystal Green',
+       'Sparkling Blue', 'Lunar White', 'Neptune Blue', 'Black Sea',
+       'Pearl Blue', 'Pearl White', 'Rust Red', 'Moss Green',
+       'Frozen Blue', 'Comet White', 'Lightning Orange', 'Lightning Blue',
+       'Diamond Black', 'Diamond Blue', 'Diamond Ruby', 'Comet Blue',
+       'Diamond Sapphire', 'Crystal Red', 'Crystal Blue',
+       'Crystal Purple', 'Red Brick', 'Concrete', 'Pearl Green',
+       'That Blue', 'Glacier Blue', 'Arctic White', 'Dynamic Black',
+       'Diamond Red', 'Radiant Blue', 'Black', 'Sapphire Blue',
+       'Onyx Black', 'Flame Red', 'Aurora Blue', 'Carbon Black',
+       'More Than White', 'Space Black', 'Not just Blue', 'Kind of Grey',
+       'Nebula Red', 'Gold', 'Rose Gold', 'Red', 'Twilight Grey',
+       'Coral Green', 'Lake Blue', 'Metallic Grey', 'Emerald Green',
+       'Ruby Red', 'Interstellar Black', 'Sea Blue', 'Midnight Grey',
+       'Moonlight White', 'Sky White', 'Glacier White',
+       'Astro Moonlight White', 'Sunset Red', 'Blue/Lake Blue', 'Blue',
+       'Matte Black', 'Matte Gold', 'Elegant Blue', 'Prime Black', 'Grey',
+       'Dark Grey', 'Burgundy Red', 'Thunder Black', 'Mineral Blue',
+       'Fusion Blue', 'Phantom Purple', 'Agate Red', 'Mystic Black',
+       'Jazzy Blue', 'Dreamy White', 'Fusion Black', 'Ocean Blue',
+       'Iris Blue', 'Sonic Black', 'Sonic Blue', 'Magnetic Black',
+       'Mystic Silver', 'Piano Black', 'Glacier ice white',
+       'Midnight Ocean Black', 'Electric Blue', 'Skyline Blue',
+       'Topaz Blue', 'Mystic Purple', 'Glacier Ice White',
+       'Starry Night Black', 'Frozen Black', 'Starry Black',
+       'Energetic Blue', 'Nebula Purple', 'White', 'Midnight Blue',
+       'Raven Black', 'Prism Blue', 'Prism Black', 'Metallic gold',
+       'Violet', 'Ocean Wave', 'Charcoal Blue', 'Forest Green',
+       'Bordeaux Red', 'Tradew Gray', 'Milan Black', 'Ice Blue',
+       'Berlin Gray', 'Midnight Black', 'Mocha Brown', 'Aqua Blue',
+       'Sandstone Black', 'Blush Gold', 'Quetzal Cyan',
+       'Bronze Gold Black', 'Nebula Blue', 'Twilight Purple',
+       'Space Gray', 'Steel Blue', 'Graphite Black', 'Armoured Edition',
+       'Rosso Red', 'Matrix Purple', 'Atlantis Blue', 'Phoenix Red',
+       'Green and Greener', 'Out of the Blue', 'Two Shades of Black',
+       'Fantasy White', 'Mystery Black', 'Marine Green', 'Unicorn White',
+       'Blazing Blue', 'Twilight Black', 'Stream White', 'Deep Blue',
+       'Flowing Silver', 'Green', 'Space Purple', 'Lightening Black',
+       'Auroral Blue', 'Ocean Green', 'Luminous Black', 'Champagne',
+       'Vanilla Mint', 'Sunrise Red', 'Astral Blue', 'Marble Green',
+       'Glaring Gold', 'Twilight Blue', 'Starry Purple', 'Glaze Blue',
+       'Purple', 'Waterfall Grey', 'Radiant Mist', 'Fluorite Purple',
+       'Jewelry White', 'Stellar Purple', 'Jet Black'], dtype=object)
+len(df['mobile_color'].unique())
+165
+df['mobile_color_basic'] = replace_regex(df,'mobile_color',['.* '])
+df['mobile_color_basic'].unique()
+array(['White', 'Blue', 'Green', 'Sea', 'Red', 'Orange', 'Black', 'Ruby',
+       'Sapphire', 'Purple', 'Brick', 'Concrete', 'Grey', 'Gold',
+       'Silver', 'white', 'gold', 'Violet', 'Wave', 'Gray', 'Brown',
+       'Cyan', 'Edition', 'Greener', 'Champagne', 'Mint', 'Mist'],
+      dtype=object)
+df['mobile_color_basic_cat'] = convert_words_to_num(df,'mobile_color_basic')
+plot_grouped_correlation_with_col(df,'mobile_price')
+
+df['mp_speed'].unique()
+array([2.   , 2.3  , 2.96 , 1.95 , 2.8  , 2.05 , 2.2  , 2.1  , 2.84 ,
+       2.5  , 1.8  , 1.4  , 1.5  , 1.3  , 1.6  , 2.39 , 2.6  , 2.649])
+df['network'].unique()
+array(['4G VOLTE, 4G, 3G, 2G', '3G, 4G VOLTE, 2G', '3G, 4G VOLTE, 4G, 2G',
+       '3G, 4G, 2G', '4G, 2G, 3G', '5G, 4G VOLTE, 4G, 3G, 2G',
+       '4G VOLTE, 3G, 2G', '4G VOLTE, 3G', '4G VOLTE, 4G, 2G, 3G',
+       '4G VOLTE, 5G', '3G, 4G VOLTE, 4G', '3G', '4G VOLTE',
+       '3G, 4G VOLTE', '2G', '4G, 3G, 2G', '3G, 4G', '4G VOLTE, 4G'],
+      dtype=object)
+df['network_count'] = [len(x.split(',')) for x in df['network']]
+df['network_count'].unique()
+array([4, 3, 5, 2, 1], dtype=int64)
+plot_grouped_correlation_with_col(df,'mobile_price')
+
+df['network_count'].plot(kind='hist')
+<AxesSubplot:ylabel='Frequency'>
+
+df['os'].unique()
+array(['Android 10', 'Android Pie 9.0', 'Android Pie 9',
+       'Android Oreo 8.1', 'Android Pie 10', 'Android Nougat 7.1.1',
+       'Android Oreo 8.0', 'Android Nougat 7.1.2', 'Android KitKat 4.4.2',
+       'Android Marshmallow 6.0.1', 'Android Nougat 7.1',
+       'Android Marshmallow 6', 'Android Nougat 7',
+       'Android Lollipop 5.4.1', 'Android Oreo 8.1.0', 'Android Oreo 8',
+       'Android Lollipop 5.1', 'Android Lollipop 5.1.1'], dtype=object)
+df['os_version'] = replace_regex(df,'os',['[a-zA-z]* '])
+df['os_version_cat'] = convert_words_to_num(df,'os_version')
+df['os_version'].unique()
+array(['10', '9.0', '9', '8.1', '7.1.1', '8.0', '7.1.2', '4.4.2', '6.0.1',
+       '7.1', '6', '7', '5.4.1', '8.1.0', '8', '5.1', '5.1.1'],
+      dtype=object)
+df['os_version_new'] = replace_regex_numericize(df,'os_version',['\..*'])
+df['os_version_new'].unique()
+array([10,  9,  8,  7,  4,  6,  5], dtype=int64)
+plot_grouped_correlation_with_col(df, 'mobile_price')
+
+df['ram'].unique()
+array([ 3,  4,  6,  8, 12,  2,  1], dtype=int64)
+df['resolution'].unique()
+array(['1600 x 720 Pixels', '2340 x 1080 pixels', '2400 x 1080 Pixels',
+       '1080 x 2340 Pixels', '1080 x 2400 Pixels', '720 x 1600 Pixels',
+       '1560 x 720 pixels', '2400 × 1080 Pixels', '1520 x 720 pixels',
+       '1520 x 720 Pixels', '2400 x 1080 pixel', '1560 x 720 Pixels',
+       '2160 x 1080 Pixels', '1440 x 720 pixels', '2280 x 1080 pixels',
+       '2160 x 1080 pixels', '2340 x 1080 Pixel', '1920 x 1080 Pixels',
+       '1520 x 720$$Pixels', '1520 x 720$$pixel', '2280 x 1080$$Pixels',
+       '1920 x 1080 pixels', '2400 x 1080 Pixel', '1280 x 720 pixels',
+       '2400 x 1080$$pixel', '1280 x 720 Pixels', '720 x 1544 pixels',
+       '720 x 1544 Pixels', '2340 x 1080 Pixels', '2316 x 1080 pixels',
+       '2280 x 1080 Pixels', '1440 x 720 Pixels', '1440 x 720 Pixel',
+       '1520 x 720$$ pixels', '1520 x 720$pixels', '2340 x 1080$$pixel',
+       '2340 x 1080$$Pixel', '960 x 540 Pixels', '540 x 960 Pixels',
+       '1080 x 2160 pixels', '1500 x 720 pixels', '720 x 1440 Pixels',
+       '720*1440 Pixels', '1080 x 1920 Pixels', '720 x 1520 pixels',
+       '1080 x 2340 pixels', '720 x 1560 pixels', '720 x 1280'],
+      dtype=object)
+df['res_dim'] = df['resolution'].replace('[pP]ixel.*','',regex=True).replace('\$','',regex=True).replace('[×*]',' x ',regex=True)
+df['res_dim'].unique()
+array(['1600 x 720 ', '2340 x 1080 ', '2400 x 1080 ', '1080 x 2340 ',
+       '1080 x 2400 ', '720 x 1600 ', '1560 x 720 ', '2400  x  1080 ',
+       '1520 x 720 ', '2160 x 1080 ', '1440 x 720 ', '2280 x 1080 ',
+       '1920 x 1080 ', '1520 x 720', '2280 x 1080', '1280 x 720 ',
+       '2400 x 1080', '720 x 1544 ', '2316 x 1080 ', '2340 x 1080',
+       '960 x 540 ', '540 x 960 ', '1080 x 2160 ', '1500 x 720 ',
+       '720 x 1440 ', '1080 x 1920 ', '720 x 1520 ', '720 x 1560 ',
+       '720 x 1280'], dtype=object)
+df['res_dims'] = [x.rsplit('x') for x in df['res_dim']]
+df['res_dims']
+0       [1600 ,  720 ]
+1       [1600 ,  720 ]
+2       [1600 ,  720 ]
+3       [1600 ,  720 ]
+4       [1600 ,  720 ]
+            ...       
+454     [1440 ,  720 ]
+455     [1440 ,  720 ]
+456    [2280 ,  1080 ]
+457    [1080 ,  2340 ]
+458    [1080 ,  2340 ]
+Name: res_dims, Length: 459, dtype: object
+temp_df = pd.DataFrame(df['res_dims'].to_list(), columns=['res1','res2'])
+df['res_dim_1'] = pd.to_numeric(temp_df['res1'])
+df['res_dim_2'] = pd.to_numeric(temp_df['res2'])
+df['res_dim_1'].unique()
+array([1600, 2340, 2400, 1080,  720, 1560, 1520, 2160, 1440, 2280, 1920,
+       1280, 2316,  960,  540, 1500], dtype=int64)
+df['res_dim_2'].unique()
+array([ 720, 1080, 2340, 2400, 1600, 1544,  540,  960, 2160, 1440, 1920,
+       1520, 1560, 1280], dtype=int64)
+for rownum, row in df.iterrows():
+    sorted_vals = sorted([row['res_dim_1'],row['res_dim_2']])
+    df.at[rownum, 'res_dim_1'] = sorted_vals[0]
+    df.at[rownum, 'res_dim_2'] = sorted_vals[1]
+plot_grouped_correlation_with_col(df,'mobile_price')
+
+df['resolution_new'] = df['res_dim_1']*df['res_dim_2']
+df['resolution_new'].unique()
+array([1152000, 2527200, 2592000, 1123200, 1094400, 2332800, 1036800,
+       2462400, 2073600,  921600, 1111680, 2501280,  518400, 1080000],
+      dtype=int64)
+df['mob_screen_dimension'] = df['mob_width']*df['mob_height']
+df['mob_screen_dimension'].unique()
+array([12330.    , 12395.76  , 11649.4   , 12187.7   , 11595.8   ,
+       11927.892 , 11801.1904, 12125.08  , 12423.62  , 11371.91  ,
+       12428.64  , 11934.24  , 12416.04  , 11801.16  , 11800.1568,
+       11642.81  , 12709.71  , 11027.538 , 11974.1841, 11463.9114,
+       12417.9998, 12063.56  , 11965.98  , 12160.984 , 11949.003 ,
+       10598.4   ,  1575.    ,  1321.805 , 11476.    , 12690.54  ,
+        9842.04  , 10299.52  , 10546.25  , 11996.8134, 11658.6   ,
+       12239.4411, 12001.4419, 11974.0075, 11647.2099, 12389.5784,
+       12557.6187, 12399.6105, 11979.3856, 11793.7717, 11748.1475,
+       11877.3   , 11855.8828, 12474.    , 11629.5   , 11615.3943,
+       12298.3821, 10869.04  , 11678.0004, 11805.5938, 10927.71  ,
+       11703.22  ,  1431.    , 12319.08  , 11925.    , 10339.14  ,
+       12285.    ,  9418.5   , 11384.28  , 11978.64  , 12672.    ,
+       11850.    , 12493.    , 11799.51  , 11908.3125, 11511.72  ,
+       11146.05  , 12464.    , 13706.3844, 11700.    , 11709.15  ,
+       12661.98  , 12374.45  , 12368.16  , 11770.45  , 11754.86  ,
+       11742.66  , 12231.    , 11655.92  , 12274.93  , 12506.4   ,
+       11888.    , 11627.14  , 12264.44  , 11001.55  , 11951.65  ,
+       12328.2   , 11942.84  , 11808.72  , 11756.96  , 11746.8   ,
+       11742.    ,  1140.21  , 10929.78  , 11528.16  ])
+df['mob_screen_dimension'].plot(kind='hist')
+<AxesSubplot:ylabel='Frequency'>
+
+Once data is cleaned and compared to unprocessed data in each column for understanding the impact of processing, we can move relevant columns for final analysis and presentation
+
+plot_grouped_correlation_with_col(df,'mobile_price')
+
+# Add columns for highest network option, p_cam_max,p_cam_num, f_cam_max,f_cam_num
+df['p_cam'].unique()
+array(['12MP + 2MP + 2MP', '48MP + 8MP + 2MP + 2MP',
+       '48MP + 8MP + 2MP + 2MP Quad Camera', '64MP + 13MP + 8MP + 2MP',
+       '16MP + 2MP', '64MP + 8MP + 2MP + 2MP Quad Camera',
+       '64MP + 12MP + 8MP + 2MP', '12MP + 2MP', '64MP + 8MP + 2MP + 2MP',
+       '13MP + 2MP', '64MP + 8MP + 8MP + 2MP', '48MP + 13MP + 8MP',
+       '48MP + 8MP + 5MP + 2MP', '48MP + 8MP + 2MP', '48MP + 5MP',
+       '12MP Rear Camera', '12MP + 5MP', '20MP + 12MP',
+       '108MP Rear Camera', '13MP Rear Camera', '48MP + 8MP',
+       '64MP + 8MP + 5MP + 2MP', '8MP Rear Camera', '13MP + 2MP + 8MP',
+       '13MP + 8MP + 2MP', '13MP + 8MP + 2MP + 2MP', '16MP + 2MP + 8MP',
+       '16MP + 8MP + 2MP', '48MP + 5MP + 8MP',
+       '48 Million Quad Pixel Sensor (12 Million Effective Pixel) + 8MP + 5MP, AI Triple Rear Camera',
+       '48MP + 13MP + 8MP + 2MP', '12MP + 5MP + 8MP', '16MP Rear Camera',
+       '16MP + 5MP', '48MP + 8MP + 5MP', '64MP + 8MP + 5MP + 5MP',
+       '48MP + 12MP + 5MP', '5MP Rear Camera',
+       '48 MP + 2 MP + 2 MP + Low Light Sensor',
+       '13 MP + 2 MP + 2 MP + Low Light Sensor',
+       '48MP + 2MP + Low Light Sensor', '16MP + 2MP + Low Light Sensor',
+       '12MP + 13MP', '13MP + 2MP Depth Sensor + 8MP Wide Angle sensor',
+       '16MP + 5MP + 2MP + Low Light Sensor', '12MP + 8MP + 2MP + 2MP',
+       '48MP + 8MP + 13MP + 2MP', '16MP + 20MP', '12MP + 20MP'],
+      dtype=object)
+df['p_cam_max'] = [x[0:2].replace('M','') for x in df['p_cam']]
+df['p_cam_max'] = numericize(df,'p_cam_max')
+df['p_cam_max'].unique()
+array([12, 48, 64, 16, 13, 20, 10,  8,  5], dtype=int64)
+df['p_cam_count'] = [x.count('MP') for x in df['p_cam']]
+df['p_cam_count'].unique()
+array([3, 4, 2, 1], dtype=int64)
+df['f_cam'].unique()
+array(['5MP Front Camera', '16MP Front Camera',
+       '32MP + 8MP Dual Front Camera', '16MP + 8MP Dual Front Camera',
+       '13MP Front Camera', '32MP Front Camera', '8MP Front Camera',
+       '20MP Front Camera', '20MP + 2MP Dual Front Camera',
+       '2MP Front Camera', '8MP Dual Front Camera', '25MP Front Camera',
+       '24MP Front Camera', '13MP + 2MP Dual Front Camera',
+       '44MP + 2MP Dual Front Camera'], dtype=object)
+df['f_cam_max'] = [x[0:2].replace('M','') for x in df['f_cam']]
+df['f_cam_max'].unique()
+array(['5', '16', '32', '13', '8', '20', '2', '25', '24', '44'],
+      dtype=object)
+df['f_cam_max'] = numericize(df,'f_cam_max')
+df['f_cam_max'].unique()
+array([ 5, 16, 32, 13,  8, 20,  2, 25, 24, 44], dtype=int64)
+df['f_cam_count'] = [x.count('MP') for x in df['f_cam']]
+df['f_cam_count'].unique()
+array([1, 2], dtype=int64)
+df['f_cam_max'].equals(df['f_cam_ord'])
+True
+df.drop('f_cam_ord',axis=1, inplace=True)
+plot_grouped_correlation_with_col(df,'mobile_price')
+
+final_df = df[['battery_power','disp_size','dual_sim_ord','f_cam_max','f_cam_count','p_cam_max','p_cam_count','int_memory','mob_depth_rearr','mob_height_rearr','mob_width_rearr','mob_weight', 'mobile_color_basic_cat','mobile_name_brand_short_new','mp_speed','network_count','num_cores_ord','os_version_new','ram','res_dim_1','res_dim_2','mobile_price']]
+cols=['Battery Power','Display Size','Sim count','Front camera max MP','Front camera count','Primary camera max MP','Primary camera count','Internal Memory','Mobile Depth','Mobile Height','Mobile Width','Mobile Weight', 'Mobile Color','Mobile Brand','Processor Speed','Networks','Core','OS','Ram','Resolution x','Resolution y','Mobile Price']
+old_cols = ['battery_power','disp_size','dual_sim_ord','f_cam_max','f_cam_count','p_cam_max','p_cam_count','int_memory','mob_depth_rearr','mob_height_rearr','mob_width_rearr','mob_weight', 'mobile_color_basic_cat','mobile_name_brand_short_new','mp_speed','network_count','num_cores_ord','os_version_new','ram','res_dim_1','res_dim_2','mobile_price']
+col_mapping = dict(zip(old_cols,cols))
+final_df = final_df.rename(columns=col_mapping)
+final_df
+Battery Power	Display Size	Sim count	Front camera max MP	Front camera count	Primary camera max MP	Primary camera count	Internal Memory	Mobile Depth	Mobile Height	...	Mobile Color	Mobile Brand	Processor Speed	Networks	Core	OS	Ram	Resolution x	Resolution y	Mobile Price
+0	5000	16.56	2	5	1	12	3	32	8.95	164.4	...	24	58	2.0	4	8	10	3	720	1600	8999
+1	5000	16.56	2	5	1	12	3	32	8.95	164.4	...	1	58	2.0	4	8	10	3	720	1600	8999
+2	5000	16.56	2	5	1	12	3	64	8.95	164.4	...	1	58	2.0	4	8	10	4	720	1600	9999
+3	5000	16.56	2	5	1	12	3	64	8.95	164.4	...	24	58	2.0	4	8	10	4	720	1600	9999
+4	5000	16.51	2	16	1	48	4	128	9.00	164.4	...	10	57	2.0	4	8	10	4	720	1600	11999
+...	...	...	...	...	...	...	...	...	...	...	...	...	...	...	...	...	...	...	...	...	...
+454	3180	14.48	2	8	1	13	1	32	7.70	150.5	...	0	28	2.5	3	8	7	3	720	1440	13490
+455	3180	14.48	2	8	1	13	1	16	7.70	150.5	...	17	28	2.5	4	8	7	2	720	1440	9490
+456	3400	15.82	2	25	1	16	1	64	7.80	156.0	...	17	35	2.0	3	8	8	4	1080	2280	22990
+457	4020	16.59	2	16	1	48	2	128	8.30	162.0	...	10	30	2.1	4	8	9	4	1080	2340	13990
+458	4020	16.59	2	16	1	48	2	128	8.30	162.0	...	16	30	2.1	4	8	9	4	1080	2340	13990
+459 rows × 22 columns
+
+plot_correlation_with_col(final_df,'Mobile Price')
+
+# saving data
+final_df.to_csv('Mobile Price Factors.csv',index=False)
+ 
